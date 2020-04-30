@@ -1,0 +1,16 @@
+version: '2'
+
+networks:
+  palestra-network:
+    external: true
+
+services:
+  node:
+    volumes:
+      - ./:/var/www
+    build:
+      context: .docker/node
+    ports:
+      - "3000:3000"
+    networks:
+      - palestra-network
