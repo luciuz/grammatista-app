@@ -1,7 +1,7 @@
 version: '2'
 
 networks:
-  palestra-network:
+  grammatista-network:
     external: true
 
 services:
@@ -14,4 +14,4 @@ services:
       - "3000:3000"
       - "10888:10888"
     networks:
-      - palestra-network
+      - grammatista-network
