@@ -7,7 +7,7 @@ networks:
 services:
   node:
     volumes:
-      - ./:/var/www
+      - ./app:/var/www
     build:
       context: .docker/node
     ports:
