@@ -3,6 +3,7 @@ import bridge from '@vkontakte/vk-bridge';
 import Root from '@vkontakte/vkui/dist/components/Root/Root';
 import ScreenSpinner from '@vkontakte/vkui/dist/components/ScreenSpinner/ScreenSpinner';
 import '@vkontakte/vkui/dist/vkui.css';
+import './css/index.css';
 
 import InitView from './view/InitView';
 import WelcomeView from './view/WelcomeView';
@@ -30,16 +31,17 @@ const App = () => {
 			}
 		});
 		async function fetchData() {
-			let route = null;
-			if (!api.token) {
-				const response = await apiManager.apiAuth().catch(api.logError);
-				if (response && response.route) {
-					route = response.route;
-				}
-			}
+			// let route = null;
+			// if (!api.token) {
+			// 	const response = await apiManager.apiAuth().catch(api.logError);
+			// 	if (response && response.route) {
+			// 		route = response.route;
+			// 	}
+			// }
 
 			setPopout(null);
-			goRoute(route);
+			goRoute('welcome/0');
+			// goRoute(route);
 		}
 		fetchData();
 	}, []);
@@ -61,4 +63,3 @@ const App = () => {
 }
 
 export default App;
-

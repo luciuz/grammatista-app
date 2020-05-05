@@ -26,7 +26,7 @@ class HomeView extends React.Component {
             <View id={this.state.id} activePanel={this.state.activePanel}>
                 <Panel id="menu">
                     <PanelHeader>
-                        Grammatista
+                        Грамматиста
                     </PanelHeader>
                     <Group>
                         <List>
