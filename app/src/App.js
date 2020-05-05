@@ -57,7 +57,7 @@ const App = () => {
 		<Root activeView={activeView}>
 			<InitView id='init' popout={popout} />
 			<WelcomeView id='welcome' activePanel={activePanel} goRoute={goRoute} />
-			<HomeView id='home' api={api} activePanel={activePanel} activeParams={activeParams} />
+			<HomeView id='home' api={api} activePanel={activePanel} activeParams={activeParams} goRoute={goRoute} />
 		</Root>
 	);
 }

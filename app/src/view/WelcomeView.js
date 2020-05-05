@@ -20,6 +20,10 @@ class WelcomeView extends React.Component {
         this.nextSlide = () => {
             this.setState({slideIndex: this.state.slideIndex + 1 });
         }
+
+        this.route = (route) => {
+            this.state.goRoute(route);
+        }
     }
 
     render() {
@@ -55,7 +59,7 @@ class WelcomeView extends React.Component {
                             <Placeholder
                                 icon={<Icon56UsersOutline />}
                                 header="2. Проходите тесты"
-                                action={<Button size="l" onClick={() => this.state.goRoute('home/menu')} >
+                                action={<Button size="l" onClick={() => this.route('home/menu')} >
                                     Понятно
                                 </Button>}
                             >
@@ -63,6 +67,9 @@ class WelcomeView extends React.Component {
                             </Placeholder>
                         </div>
                     </Gallery>
+                </Panel>
+                <Panel id="1">
+                    1111
                 </Panel>
             </View>
         )
