@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import bridge from '@vkontakte/vk-bridge';
-import View from '@vkontakte/vkui/dist/components/View/View';
+import Root from '@vkontakte/vkui/dist/components/Root/Root';
 import ScreenSpinner from '@vkontakte/vkui/dist/components/ScreenSpinner/ScreenSpinner';
 import '@vkontakte/vkui/dist/vkui.css';
 
-import Home from './panels/Home';
-import Persik from './panels/Persik';
+import InitView from './view/InitView';
+import WelcomeView from './view/WelcomeView';
+import HomeView from './view/HomeView';
+
+import ApiClass from './lib/Api';
+import StorageClass from './lib/Storage';
+import ApiManagerClass from './lib/ApiManager';
+
+const api = new ApiClass();
+const apiManager = new ApiManagerClass(api, new StorageClass());
 
 const App = () => {
-	const [activePanel, setActivePanel] = useState('home');
-	const [fetchedUser, setUser] = useState(null);
+	const [activeView, setActiveView] = useState('init');
+	const [activePanel, setActivePanel] = useState('0');
+	const [activeParams, setActiveParams] = useState(null);
 	const [popout, setPopout] = useState(<ScreenSpinner size='large' />);
 
 	useEffect(() => {
@@ -21,22 +30,33 @@ const App = () => {
 			}
 		});
 		async function fetchData() {
-			const user = await bridge.send('VKWebAppGetUserInfo');
-			setUser(user);
+			let route = null;
+			if (!api.token) {
+				const response = await apiManager.apiAuth().catch(api.logError);
+				if (response && response.route) {
+					route = response.route;
+				}
+			}
+
 			setPopout(null);
+			goRoute(route);
 		}
 		fetchData();
 	}, []);
 
-	const go = e => {
-		setActivePanel(e.currentTarget.dataset.to);
+	const goRoute = route => {
+		const pr = route ? apiManager.parseRoute(route) : apiManager.homeRoute();
+		setActiveParams(pr.params);
+		setActivePanel(pr.activePanel);
+		setActiveView(pr.activeView);
 	};
 
 	return (
-		<View activePanel={activePanel} popout={popout}>
-			<Home id='home' fetchedUser={fetchedUser} go={go} />
-			<Persik id='persik' go={go} />
-		</View>
+		<Root activeView={activeView}>
+			<InitView id='init' popout={popout} />
+			<WelcomeView id='welcome' activePanel={activePanel} goRoute={goRoute} />
+			<HomeView id='home' api={api} activePanel={activePanel} activeParams={activeParams} />
+		</Root>
 	);
 }
 
