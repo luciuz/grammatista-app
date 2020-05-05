@@ -11,9 +11,9 @@ const WelcomeView = ({ id, activePanel, goRoute }) => {
 
     const [slideIndex, setSlideIndex] = useState(0);
 
-    const nextSlide = () => {
-        setSlideIndex(slideIndex+1);
-    }
+    const nextSlide = () => (
+        setSlideIndex(slideIndex+1)
+    );
 
     return (
         <View id={id} activePanel={activePanel}>
@@ -23,7 +23,7 @@ const WelcomeView = ({ id, activePanel, goRoute }) => {
                     style={{ height: "100%" }}
                     bullets="dark"
                     slideIndex={slideIndex}
-                    onChange={s => setSlideIndex({s})}
+                    onChange={s => setSlideIndex(s)}
                 >
                     <div style={{ backgroundColor: 'var(--destructive)' }}>
                         <Placeholder
