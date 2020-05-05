@@ -10,7 +10,15 @@ class Api
 		this.STATUS_OK = 200;
 		this.STATUS_UNAUTHORIZED = 401;
 
-		this.token = undefined;
+		/**
+		 * @type {string|null}
+		 * @protected
+		 */
+		this.token = null;
+	}
+
+	getToken() {
+		return this.token;
 	}
 
 	async post(url, data) {

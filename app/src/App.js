@@ -9,12 +9,7 @@ import InitView from './view/InitView';
 import WelcomeView from './view/WelcomeView';
 import HomeView from './view/HomeView';
 
-import ApiClass from './lib/Api';
-import StorageClass from './lib/Storage';
-import ApiManagerClass from './lib/ApiManager';
-
-const api = new ApiClass();
-const apiManager = new ApiManagerClass(api, new StorageClass());
+import { api, apiManager } from './lib/ApiInstance';
 
 const App = () => {
 	const [activeView, setActiveView] = useState('init');
@@ -31,17 +26,16 @@ const App = () => {
 			}
 		});
 		async function fetchData() {
-			// let route = null;
-			// if (!api.token) {
-			// 	const response = await apiManager.apiAuth().catch(api.logError);
-			// 	if (response && response.route) {
-			// 		route = response.route;
-			// 	}
-			// }
+			let route = null;
+			if (!api.getToken()) {
+				const response = await apiManager.apiAuth().catch(api.logError);
+				if (response && response.route) {
+					route = response.route;
+				}
+			}
 
 			setPopout(null);
-			goRoute('welcome/0');
-			// goRoute(route);
+			goRoute(route);
 		}
 		fetchData();
 	}, []);
@@ -55,9 +49,9 @@ const App = () => {
 
 	return (
 		<Root activeView={activeView}>
-			<InitView id='init' popout={popout} />
+			<InitView id='init' activePanel={activePanel} popout={popout} />
 			<WelcomeView id='welcome' activePanel={activePanel} goRoute={goRoute} />
-			<HomeView id='home' api={api} activePanel={activePanel} activeParams={activeParams} goRoute={goRoute} />
+			<HomeView id='home' activePanel={activePanel} activeParams={activeParams} goRoute={goRoute} />
 		</Root>
 	);
 }

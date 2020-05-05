@@ -10,62 +10,47 @@ import Cell from "@vkontakte/vkui/dist/components/Cell/Cell";
 import Icon28SearchOutline from '@vkontakte/icons/dist/28/search_outline';
 import Icon28FavoriteOutline from '@vkontakte/icons/dist/28/favorite_outline';
 import Icon28ListCheckOutline from '@vkontakte/icons/dist/28/list_check_outline';
+import PropTypes from "prop-types";
 
-class HomeView extends React.Component {
-    constructor(props) {
-        super(props);
+const HomeView = ({ id, activePanel, goRoute }) => (
+    <View id={id} activePanel={activePanel}>
+        <Panel id="menu">
+            <PanelHeader>
+                Грамматиста
+            </PanelHeader>
+            <Group>
+                <List>
+                    <Cell expandable before={<Icon28SearchOutline />} onClick={() => goRoute('home/search')}>Поиск</Cell>
+                    <Cell expandable before={<Icon28FavoriteOutline />} onClick={() => goRoute('home/bookmark')}>Закладки</Cell>
+                    <Cell expandable before={<Icon28ListCheckOutline />} onClick={() => goRoute('home/done')}>Пройдено</Cell>
+                </List>
+            </Group>
+        </Panel>
+        <Panel id="search">
+            <PanelHeader separator={false} left={<PanelHeaderBack onClick={() => goRoute('home/menu')} />}>
+                <Search />
+            </PanelHeader>
+            Поиск
+        </Panel>
+        <Panel id="bookmark">
+            <PanelHeader left={<PanelHeaderBack onClick={() => goRoute('home/menu')} />}>
+                Закладки
+            </PanelHeader>
+            Закладки
+        </Panel>
+        <Panel id="done">
+            <PanelHeader left={<PanelHeaderBack onClick={() => goRoute('home/menu')} />}>
+                Пройдено
+            </PanelHeader>
+            Пройдено
+        </Panel>
+    </View>
+);
 
-        this.state = {
-            goRoute: props.goRoute,
-            id: props.id,
-            activePanel: props.activePanel
-        }
-
-        this.api = props.api;
-
-        this.route = (route) => {
-            this.state.goRoute(route);
-        }
-    }
-
-    render() {
-        return (
-            <View id={this.state.id} activePanel={this.state.activePanel}>
-                <Panel id="menu">
-                    <PanelHeader>
-                        Грамматиста
-                    </PanelHeader>
-                    <Group>
-                        <List>
-                            <Cell expandable before={<Icon28SearchOutline />} onClick={() => this.route('home/search')}>Поиск</Cell>
-                            <Cell expandable before={<Icon28FavoriteOutline />} onClick={() => this.route('home/bookmark')}>Закладки</Cell>
-                            <Cell expandable before={<Icon28ListCheckOutline />} onClick={() => this.route('home/done')}>Пройдено</Cell>
-                            <Cell expandable before={<Icon28ListCheckOutline />} onClick={() => this.route('welcome/0')}>Welcome 0</Cell>
-                            <Cell expandable before={<Icon28ListCheckOutline />} onClick={() => this.route('welcome/1')}>Welcome 1</Cell>
-                        </List>
-                    </Group>
-                </Panel>
-                <Panel id="search">
-                    <PanelHeader separator={false} left={<PanelHeaderBack onClick={() => this.route('home/menu')} />}>
-                        <Search />
-                    </PanelHeader>
-                    Поиск
-                </Panel>
-                <Panel id="bookmark">
-                    <PanelHeader left={<PanelHeaderBack onClick={() => this.route('home/menu')} />}>
-                        Закладки
-                    </PanelHeader>
-                    Закладки
-                </Panel>
-                <Panel id="done">
-                    <PanelHeader left={<PanelHeaderBack onClick={() => this.route('home/menu')} />}>
-                        Пройдено
-                    </PanelHeader>
-                    Пройдено
-                </Panel>
-            </View>
-        )
-    }
-}
+HomeView.propTypes = {
+    id: PropTypes.string.isRequired,
+    activePanel: PropTypes.string.isRequired,
+    goRoute: PropTypes.func
+};
 
 export default HomeView;
