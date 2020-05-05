@@ -40,7 +40,7 @@ const WelcomeView = ({ id, activePanel, goRoute }) => {
                             header="1. Изучайте материалы"
                             action={<Button size="l" onClick={nextSlide}>Далее</Button>}
                         >
-                            Находите интересные материалы, уроки, курсы. Изучайте. Добавляйте их в закладки.
+                            Находите интересные материалы, уроки, курсы. Изучайте. Добавляйте их в закладки!
                         </Placeholder>
                     </div>
                     <div style={{ backgroundColor: 'var(--accent)' }}>
