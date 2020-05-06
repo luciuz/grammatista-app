@@ -13,8 +13,6 @@ import { api, apiManager } from './lib/ApiInstance';
 
 const App = () => {
 	const [activeView, setActiveView] = useState('init');
-	const [activePanel, setActivePanel] = useState('0');
-	const [activeParams, setActiveParams] = useState(null);
 	const [popout, setPopout] = useState(<ScreenSpinner size='large' />);
 
 	useEffect(() => {
@@ -26,32 +24,25 @@ const App = () => {
 			}
 		});
 		async function fetchData() {
-			let route = null;
+			let view = 'home';
 			if (!api.getToken()) {
 				const response = await apiManager.apiAuth().catch(api.logError);
-				if (response && response.route) {
-					route = response.route;
+				if (response && response.view) {
+					view = response.view;
 				}
 			}
 
 			setPopout(null);
-			goRoute(route);
+			setActiveView(view);
 		}
 		fetchData();
 	}, []);
 
-	const goRoute = route => {
-		const pr = route ? apiManager.parseRoute(route) : apiManager.homeRoute();
-		setActiveParams(pr.params);
-		setActivePanel(pr.activePanel);
-		setActiveView(pr.activeView);
-	};
-
 	return (
 		<Root activeView={activeView}>
-			<InitView id='init' activePanel={activePanel} popout={popout} />
-			<WelcomeView id='welcome' activePanel={activePanel} goRoute={goRoute} />
-			<HomeView id='home' activePanel={activePanel} activeParams={activeParams} goRoute={goRoute} />
+			<InitView id='init' popout={popout} />
+			<WelcomeView id='welcome' setActiveView={setActiveView} />
+			<HomeView id='home' setActiveView={setActiveView} />
 		</Root>
 	);
 }

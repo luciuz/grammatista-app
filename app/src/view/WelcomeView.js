@@ -7,7 +7,7 @@ import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder
 import Icon56UsersOutline from '@vkontakte/icons/dist/56/users_outline';
 import PropTypes from "prop-types";
 
-const WelcomeView = ({ id, activePanel, goRoute }) => {
+const WelcomeView = ({ id, setActiveView }) => {
 
     const [slideIndex, setSlideIndex] = useState(0);
 
@@ -16,7 +16,7 @@ const WelcomeView = ({ id, activePanel, goRoute }) => {
     );
 
     return (
-        <View id={id} activePanel={activePanel}>
+        <View id={id} activePanel="0">
             <Panel id="0">
                 <Gallery
                     slideWidth="100%"
@@ -47,7 +47,7 @@ const WelcomeView = ({ id, activePanel, goRoute }) => {
                         <Placeholder
                             icon={<Icon56UsersOutline />}
                             header="2. Проходите тесты"
-                            action={<Button size="l" onClick={() => goRoute('home/menu')} >
+                            action={<Button size="l" onClick={() => setActiveView('home')} >
                                 Понятно
                             </Button>}
                         >
@@ -62,8 +62,7 @@ const WelcomeView = ({ id, activePanel, goRoute }) => {
 
 WelcomeView.propTypes = {
     id: PropTypes.string.isRequired,
-    activePanel: PropTypes.string.isRequired,
-    goRoute: PropTypes.func
+    setActiveView: PropTypes.func.isRequired
 };
 
 export default WelcomeView;

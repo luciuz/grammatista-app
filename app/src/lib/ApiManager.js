@@ -33,7 +33,7 @@ class ApiManager
 	/**
 	 * @typedef {object} AuthDto
 	 * @property {string} token
-	 * @property {string|null} route
+	 * @property {string|null} view
 	 */
 
 	/**
@@ -70,41 +70,6 @@ class ApiManager
 	getQueryData() {
 		const search = window.location.search.substring(1);
 		return JSON.parse('{"'+ decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
-	}
-
-	/**
-	 * @typedef {object} RouteParams
-	 * @property {string} activeView
-	 * @property {string} activePanel
-	 * @property {string|null} params
-	 */
-
-	/**
-	 * @param route
-	 * @returns RouteParams
-	 */
-	parseRoute(route) {
-		if (!route) {
-			return this.homeRoute();
-		}
-
-		const [view, panel, params] = route.split('/');
-		return {
-			activeView: view,
-			activePanel: panel,
-			params: params || null
-		}
-	}
-
-	/**
-	 * @returns RouteParams
-	 */
-	homeRoute() {
-		return {
-			activeView: 'home',
-			activePanel: 'menu',
-			params: null
-		}
 	}
 }
 
