@@ -11,6 +11,8 @@ import Icon28SearchOutline from '@vkontakte/icons/dist/28/search_outline';
 import Icon28FavoriteOutline from '@vkontakte/icons/dist/28/favorite_outline';
 import Icon28ListCheckOutline from '@vkontakte/icons/dist/28/list_check_outline';
 import PropTypes from "prop-types";
+import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
+import Icon56InfoOutline from '@vkontakte/icons/dist/56/info_outline';
 
 const HomeView = ({ id, activePanel, goRoute }) => (
     <View id={id} activePanel={activePanel}>
@@ -27,22 +29,31 @@ const HomeView = ({ id, activePanel, goRoute }) => (
             </Group>
         </Panel>
         <Panel id="search">
-            <PanelHeader separator={false} left={<PanelHeaderBack onClick={() => goRoute('home/menu')} />}>
-                <Search />
+            <PanelHeader left={<PanelHeaderBack onClick={() => goRoute('home/menu')} />}>
+                Поиск
             </PanelHeader>
+            <Search />
             Поиск
         </Panel>
         <Panel id="bookmark">
             <PanelHeader left={<PanelHeaderBack onClick={() => goRoute('home/menu')} />}>
                 Закладки
             </PanelHeader>
-            Закладки
+            <Placeholder
+                icon={<Icon56InfoOutline />}
+            >
+                У вас еще нет ни одной закладки
+            </Placeholder>
         </Panel>
         <Panel id="done">
             <PanelHeader left={<PanelHeaderBack onClick={() => goRoute('home/menu')} />}>
                 Пройдено
             </PanelHeader>
-            Пройдено
+            <Placeholder
+                icon={<Icon56InfoOutline />}
+            >
+                У вас еще нет ни одного пройденного материала
+            </Placeholder>
         </Panel>
     </View>
 );
