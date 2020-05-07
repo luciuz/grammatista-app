@@ -35,6 +35,12 @@ const SearchPanel = ({ id, setActivePanel }) => {
         }
     };
 
+    const doKeyDown = async (e) => {
+        if (e.key === 'Enter') {
+            await doSearch();
+        }
+    };
+
     useEffect(() => {
         if (q === '' && result !== null) {
             setResult(null);
@@ -46,7 +52,7 @@ const SearchPanel = ({ id, setActivePanel }) => {
             <PanelHeader left={<PanelHeaderBack onClick={() => setActivePanel('menu')} />}>
                 Поиск
             </PanelHeader>
-            <Search value={q} onChange={(e) => setQ(e.target.value)} onBlur={doSearch} />
+            <Search value={q} onChange={(e) => setQ(e.target.value)} onBlur={doSearch} onKeyDown={doKeyDown} />
             {result === null ?
                 <Div>
                     <Header mode="secondary">Информация</Header>
@@ -60,7 +66,7 @@ const SearchPanel = ({ id, setActivePanel }) => {
                         <Group>
                             <Header mode="secondary">Результаты поиска</Header>
                             {result.map((item) =>
-                                <SimpleCell expandable>
+                                <SimpleCell expandable key={item.id}>
                                     {item.title}
                                 </SimpleCell>
                             )}
