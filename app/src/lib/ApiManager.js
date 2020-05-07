@@ -31,6 +31,29 @@ class ApiManager
 	}
 
 	/**
+	 * @typedef {object} LessonSearchDto
+	 * @property {array.<LessonItemDto>} list
+	 * @property {number|null} rowsLeft
+	 * @property {number|null} maxId
+	 */
+
+	/**
+	 * @typedef {object} LessonItemDto
+	 * @property {number} id
+	 * @property {string} title
+	 * @property {boolean} isBookmark
+	 * @property {boolean} isComplete
+	 */
+
+	/**
+	 * @returns {Promise<LessonSearchDto>}
+	 */
+	async lessonSearch(q, maxId) {
+		const api = this.api;
+		return await api.postAuth(api.LESSON_SEARCH, {q: q, maxId: maxId});
+	}
+
+	/**
 	 * @typedef {object} AuthDto
 	 * @property {string} token
 	 * @property {string|null} view

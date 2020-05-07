@@ -3,7 +3,6 @@ import View from "@vkontakte/vkui/dist/components/View/View";
 import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
 import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
 import PanelHeaderBack from '@vkontakte/vkui/dist/components/PanelHeaderBack/PanelHeaderBack';
-import Search from '@vkontakte/vkui/dist/components/Search/Search';
 import Group from '@vkontakte/vkui/dist/components/Group/Group';
 import List from '@vkontakte/vkui/dist/components/List/List';
 import Cell from "@vkontakte/vkui/dist/components/Cell/Cell";
@@ -13,6 +12,7 @@ import Icon28ListCheckOutline from '@vkontakte/icons/dist/28/list_check_outline'
 import PropTypes from "prop-types";
 import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
 import Icon56InfoOutline from '@vkontakte/icons/dist/56/info_outline';
+import SearchPanel from "../panels/SearchPanel";
 
 const HomeView = ({ id, setActiveView }) => {
 
@@ -32,13 +32,7 @@ const HomeView = ({ id, setActiveView }) => {
                     </List>
                 </Group>
             </Panel>
-            <Panel id="search">
-                <PanelHeader left={<PanelHeaderBack onClick={() => setActivePanel('menu')} />}>
-                    Поиск
-                </PanelHeader>
-                <Search />
-                Поиск
-            </Panel>
+            <SearchPanel id="search" setActivePanel={setActivePanel} />
             <Panel id="bookmark">
                 <PanelHeader left={<PanelHeaderBack onClick={() => setActivePanel('menu')} />}>
                     Закладки

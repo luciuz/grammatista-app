@@ -6,6 +6,7 @@ class Api
 	constructor() {
 		this.URL = 'http://localhost:8080/';
 		this.AUTH = 'user/auth';
+		this.LESSON_SEARCH = 'lesson/search';
 
 		this.STATUS_OK = 200;
 		this.STATUS_UNAUTHORIZED = 401;
