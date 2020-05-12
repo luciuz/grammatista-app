@@ -1,21 +1,26 @@
 import React, {useState, useEffect} from 'react';
 import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
 import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
+import Button from '@vkontakte/vkui/dist/components/Button/Button';
 import PanelHeaderBack from '@vkontakte/vkui/dist/components/PanelHeaderBack/PanelHeaderBack';
 import Div from '@vkontakte/vkui/dist/components/Div/Div';
 import Title from '@vkontakte/vkui/dist/components/Typography/Title/Title';
 import Text from '@vkontakte/vkui/dist/components/Typography/Text/Text';
+import FormLayout from '@vkontakte/vkui/dist/components/FormLayout/FormLayout';
+import FormLayoutGroup from '@vkontakte/vkui/dist/components/FormLayoutGroup/FormLayoutGroup';
 import {api} from "../lib/ApiInstance";
 import PropTypes from "prop-types";
 
 const LessonPanel = ({ id, setActivePanel, lessonId }) => {
     const [lesson, setLesson] = useState(null);
+    const [isBookmark, setIsBookmark] = useState(null);
 
     useEffect(() => {
         async function fetchData() {
-            const response = await api.getLesson(lessonId).catch(api.logError);
-            if (response) {
-                setLesson(response);
+            const lesson = await api.getLesson(lessonId).catch(api.logError);
+            if (lesson) {
+                setIsBookmark(lesson.isBookmark);
+                setLesson(lesson);
             }
         }
         fetchData();
@@ -26,12 +31,8 @@ const LessonPanel = ({ id, setActivePanel, lessonId }) => {
             <PanelHeader left={<PanelHeaderBack onClick={() => setActivePanel('search')} />}>
                 Материал
             </PanelHeader>
-            {lesson === null ?
-                <Div>
-                    Error
-                </Div>
-                :
-                <Div>
+                {lesson && <Div>
+                <div style={{ marginBottom: 16 }}>
                     {lesson.body.list.map((item, i) =>
                         [
                             item.h1 &&
@@ -52,8 +53,25 @@ const LessonPanel = ({ id, setActivePanel, lessonId }) => {
                             <a key={i} href={item.a.link} target="_blank" rel="noopener noreferrer">{item.a.text}</a>,
                         ]
                     )}
-                </Div>
-            }
+                </div>
+                <FormLayout>
+                    <FormLayoutGroup>
+                        <Button size="xl" mode="primary">
+                            Начать тест
+                        </Button>
+
+                        {isBookmark ?
+                            <Button size="xl" mode="secondary">
+                                Убрать из закладок
+                            </Button>
+                            :
+                            <Button size="xl" mode="secondary">
+                                Добавить в закладки
+                            </Button>
+                        }
+                    </FormLayoutGroup>
+                </FormLayout>
+            </Div>}
         </Panel>
     );
 }
