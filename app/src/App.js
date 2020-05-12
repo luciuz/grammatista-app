@@ -9,7 +9,7 @@ import InitView from './view/InitView';
 import WelcomeView from './view/WelcomeView';
 import HomeView from './view/HomeView';
 
-import { api, apiManager } from './lib/ApiInstance';
+import { api } from './lib/ApiInstance';
 
 const App = () => {
 	const [activeView, setActiveView] = useState('init');
@@ -25,8 +25,8 @@ const App = () => {
 		});
 		async function fetchData() {
 			let view = 'home';
-			if (!api.getToken()) {
-				const response = await apiManager.apiAuth().catch(api.logError);
+			if (!api.getClient().getToken()) {
+				const response = await api.auth().catch(api.logError);
 				if (response && response.view) {
 					view = response.view;
 				}

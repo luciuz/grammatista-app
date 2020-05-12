@@ -1,72 +1,98 @@
-import {uuid} from 'uuidv4';
+import {uuid} from "uuidv4";
 import FetchError from "./FetchError";
 
 class Api
 {
-	constructor() {
-		this.URL = 'http://localhost:8080/';
+	constructor(client, storage) {
 		this.AUTH = 'user/auth';
 		this.LESSON_SEARCH = 'lesson/search';
 
-		this.STATUS_OK = 200;
-		this.STATUS_UNAUTHORIZED = 401;
-
 		/**
-		 * @type {string|null}
+		 * @type ApiClient
 		 * @protected
 		 */
-		this.token = null;
+		this.client = client;
+
+		/**
+		 * @type {Storage}
+		 * @protected
+		 */
+		this.storage = storage;
+
+		this.init();
 	}
 
-	getToken() {
-		return this.token;
+	init() {
+		this.client.setToken(this.storage.get(this.storage.TOKEN));
 	}
 
-	async post(url, data) {
-		const response = await this.fetch(url, data, false);
-		return await this.handleResponse(response);
+	getClient() {
+		return this.client;
 	}
 
-	async postAuth(url, data) {
-		const response = await this.fetch(url, data, true);
-		return await this.handleResponse(response);
+	/**
+	 * @typedef {object} LessonSearchDto
+	 * @property {array.<LessonItemDto>} list
+	 * @property {number|null} rowsLeft
+	 * @property {number|null} maxId
+	 */
+
+	/**
+	 * @typedef {object} LessonItemDto
+	 * @property {number} id
+	 * @property {string} title
+	 * @property {boolean} isBookmark
+	 * @property {boolean} isComplete
+	 */
+
+	/**
+	 * @returns {Promise<LessonSearchDto>}
+	 */
+	async lessonSearch(q, maxId) {
+		const client = this.client;
+		return await client.postAuth(this.LESSON_SEARCH, {q: q, maxId: maxId});
 	}
 
-	fetch(url, data, auth) {
-		return fetch(this.URL + url, this.getParams(data, auth));
+	/**
+	 * @typedef {object} AuthDto
+	 * @property {string} token
+	 * @property {string|null} view
+	 */
+
+	/**
+	 * @returns {Promise<AuthDto>}
+	 */
+	async auth() {
+		const client = this.client;
+		const data = this.getQueryData();
+		data.transaction_token = this.getAuthTransactionToken();
+		const authDto = await client.post(this.AUTH, data);
+		this.storage.set(this.storage.TOKEN, authDto.token);
+		client.setToken(authDto.token);
+		return authDto;
 	}
 
-	async handleResponse(response) {
-		const result = await response.json();
-		if (response.status === this.STATUS_OK) {
-			return result;
+	/**
+	 * @returns {string}
+	 */
+	getAuthTransactionToken() {
+		const key = this.storage.AUTH_TRANSACTION_TOKEN;
+		const token = this.storage.get(key);
+		if (token) {
+			return token;
 		}
-		const error = new FetchError();
-		error.addParams(response.status, result);
-		throw error;
+
+		const newToken = this.generateToken();
+		this.storage.set(key, newToken);
+		return newToken;
 	}
 
-	getParams(data, auth) {
-		return {
-			method: 'POST',
-			headers: this.getHeaders(auth),
-			mode: 'cors',
-			body: JSON.stringify(data)
-		};
-	}
-
-	getHeaders(auth) {
-		const headers = {
-			'Content-Type': 'application/json'
-		}
-		if (auth) {
-			headers['Token'] = this.token;
-		}
-		return headers;
-	}
-
-	setToken(token) {
-		this.token = token;
+	/**
+	 * @returns {object}
+	 */
+	getQueryData() {
+		const search = window.location.search.substring(1);
+		return JSON.parse('{"'+ decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
 	}
 
 	generateToken() {

@@ -8,7 +8,7 @@ import Header from "@vkontakte/vkui/dist/components/Header/Header";
 import SimpleCell from "@vkontakte/vkui/dist/components/SimpleCell/SimpleCell";
 import Div from "@vkontakte/vkui/dist/components/Div/Div";
 import Text from "@vkontakte/vkui/dist/components/Typography/Text/Text";
-import {api, apiManager} from "../lib/ApiInstance";
+import {api} from "../lib/ApiInstance";
 import Group from "@vkontakte/vkui/dist/components/Group/Group";
 import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
 import Icon56InfoOutline from '@vkontakte/icons/dist/56/info_outline';
@@ -24,7 +24,7 @@ const SearchPanel = ({ id, setActivePanel }) => {
     const doSearch = async () => {
         if (q && q !== lastQ) {
             setLastQ(q);
-            const response = await apiManager.lessonSearch(q, null).catch(api.logError);
+            const response = await api.lessonSearch(q, null).catch(api.logError);
             let result = null;
             if (response) {
                 setRowsLeft(response.rowsLeft);
