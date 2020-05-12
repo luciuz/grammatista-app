@@ -6,6 +6,7 @@ class Api
 	constructor(client, storage) {
 		this.AUTH = 'user/auth';
 		this.LESSON_SEARCH = 'lesson/search';
+		this.LESSON_GET = 'lesson/get';
 
 		/**
 		 * @type ApiClient
@@ -28,6 +29,23 @@ class Api
 
 	getClient() {
 		return this.client;
+	}
+
+	/**
+	 * @typedef {object} LessonRichDto
+	 * @property {number} id
+	 * @property {string} title
+	 * @property {object} body
+	 * @property {boolean} isBookmark
+	 * @property {boolean} isComplete
+	 */
+
+	/**
+	 * @returns {Promise<LessonRichDto>}
+	 */
+	async getLesson(id) {
+		const client = this.client;
+		return await client.postAuth(this.LESSON_GET, {id: id});
 	}
 
 	/**

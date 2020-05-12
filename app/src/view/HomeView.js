@@ -13,10 +13,12 @@ import PropTypes from "prop-types";
 import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
 import Icon56InfoOutline from '@vkontakte/icons/dist/56/info_outline';
 import SearchPanel from "../panels/SearchPanel";
+import LessonPanel from "../panels/LessonPanel";
 
 const HomeView = ({ id, setActiveView }) => {
 
     const [activePanel, setActivePanel] = useState('menu');
+    const [lessonId, setLessonId] = useState(null);
 
     return (
         <View id={id} activePanel={activePanel}>
@@ -32,7 +34,8 @@ const HomeView = ({ id, setActiveView }) => {
                     </List>
                 </Group>
             </Panel>
-            <SearchPanel id="search" setActivePanel={setActivePanel} />
+            <SearchPanel id="search" setActivePanel={setActivePanel} setLessonId={setLessonId} />
+            <LessonPanel id="lesson" setActivePanel={setActivePanel} lessonId={lessonId} />
             <Panel id="bookmark">
                 <PanelHeader left={<PanelHeaderBack onClick={() => setActivePanel('menu')} />}>
                     Закладки

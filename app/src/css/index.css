@@ -1,3 +1,8 @@
 #view-welcome .Panel__in {
     height: 100%;
 }
+
+#lesson img {
+    display: block;
+    max-width: 100%;
+}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import bridge from '@vkontakte/vk-bridge';
 import Root from '@vkontakte/vkui/dist/components/Root/Root';
 import ScreenSpinner from '@vkontakte/vkui/dist/components/ScreenSpinner/ScreenSpinner';
@@ -9,7 +9,7 @@ import InitView from './view/InitView';
 import WelcomeView from './view/WelcomeView';
 import HomeView from './view/HomeView';
 
-import { api } from './lib/ApiInstance';
+import {api} from './lib/ApiInstance';
 
 const App = () => {
 	const [activeView, setActiveView] = useState('init');

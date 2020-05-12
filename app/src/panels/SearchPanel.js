@@ -13,13 +13,17 @@ import Group from "@vkontakte/vkui/dist/components/Group/Group";
 import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
 import Icon56InfoOutline from '@vkontakte/icons/dist/56/info_outline';
 
-const SearchPanel = ({ id, setActivePanel }) => {
-
+const SearchPanel = ({ id, setActivePanel, setLessonId }) => {
     const [q, setQ] = useState('');
     const [lastQ, setLastQ] = useState('');
     const [rowsLeft, setRowsLeft] = useState(null);
     const [maxId, setMaxId] = useState(null);
     const [result, setResult] = useState(null);
+
+    const doLesson = (id) => {
+        setLessonId(id);
+        setActivePanel('lesson');
+    }
 
     const doSearch = async () => {
         if (q && q !== lastQ) {
@@ -66,7 +70,7 @@ const SearchPanel = ({ id, setActivePanel }) => {
                         <Group>
                             <Header mode="secondary">Результаты поиска</Header>
                             {result.map((item) =>
-                                <SimpleCell expandable key={item.id}>
+                                <SimpleCell expandable key={item.id} onClick={doLesson.bind(this, item.id)}>
                                     {item.title}
                                 </SimpleCell>
                             )}
@@ -84,7 +88,8 @@ const SearchPanel = ({ id, setActivePanel }) => {
 
 SearchPanel.propTypes = {
     id: PropTypes.string.isRequired,
-    setActivePanel: PropTypes.func.isRequired
+    setActivePanel: PropTypes.func.isRequired,
+    setLessonId: PropTypes.func.isRequired
 };
 
 export default SearchPanel;
