@@ -11,9 +11,33 @@ import FormLayoutGroup from '@vkontakte/vkui/dist/components/FormLayoutGroup/For
 import {api} from "../lib/ApiInstance";
 import PropTypes from "prop-types";
 
-const LessonPanel = ({ id, setActivePanel, lessonId }) => {
+const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState, setVariantId }) => {
     const [lesson, setLesson] = useState(null);
     const [isBookmark, setIsBookmark] = useState(null);
+
+    const back = () => {
+        setLessonState(null);
+        setActivePanel('search');
+    };
+
+    const startVariant = async () => {
+        let activeVariantId = lesson.activeVariantId;
+        if (activeVariantId === null) {
+            const response = await api.createVariant(lessonId).catch(api.logError);
+            if (response) {
+                activeVariantId = response.id;
+                lesson.activeVariantId = activeVariantId;
+                setLesson(lesson);
+            }
+        }
+
+        setLessonState({
+            lesson: lesson,
+            scrollY: window.pageYOffset
+        });
+        setVariantId(activeVariantId);
+        setActivePanel('variant');
+    }
 
     useEffect(() => {
         async function fetchData() {
@@ -23,16 +47,26 @@ const LessonPanel = ({ id, setActivePanel, lessonId }) => {
                 setLesson(lesson);
             }
         }
-        fetchData();
-    }, []);
+
+        if (!lesson) {
+            if (lessonState) {
+                const lessonLS = lessonState.lesson;
+                window.scrollTo(0, lessonState.scrollY);
+                setIsBookmark(lessonLS.isBookmark);
+                setLesson(lessonLS);
+            } else {
+                fetchData();
+            }
+        }
+    }, [lessonId, lessonState, setLessonState, setVariantId, lesson]);
 
     return (
         <Panel id={id}>
-            <PanelHeader left={<PanelHeaderBack onClick={() => setActivePanel('search')} />}>
+            <PanelHeader left={<PanelHeaderBack onClick={back} />}>
                 Материал
             </PanelHeader>
                 {lesson && <Div>
-                <div style={{ marginBottom: 16 }}>
+                    <div style={{ marginBottom: 16 }}>
                     {lesson.body.list.map((item, i) =>
                         [
                             item.h1 &&
@@ -46,9 +80,9 @@ const LessonPanel = ({ id, setActivePanel, lessonId }) => {
                             item.i &&
                             <img key={i} src={item.i.src} alt={item.i.alt} style={{ marginBottom: 16 }} />,
                             item.l &&
-                            <ul key={i}>{item.l.map((li) => <li>{li}</li>)}</ul>,
+                            <ul key={i}>{item.l.map((li, j) => <li key={j}>{li}</li>)}</ul>,
                             item.ln &&
-                            <ol key={i}>{item.ln.map((li) => <li>{li}</li>)}</ol>,
+                            <ol key={i}>{item.ln.map((li, j) => <li key={j}>{li}</li>)}</ol>,
                             item.a &&
                             <a key={i} href={item.a.link} target="_blank" rel="noopener noreferrer">{item.a.text}</a>,
                         ]
@@ -56,8 +90,8 @@ const LessonPanel = ({ id, setActivePanel, lessonId }) => {
                 </div>
                 <FormLayout>
                     <FormLayoutGroup>
-                        <Button size="xl" mode="primary">
-                            Начать тест
+                        <Button size="xl" mode="primary" onClick={startVariant}>
+                            {lesson.activeVariantId ? 'Продолжить тест' : 'Начать тест'}
                         </Button>
 
                         {isBookmark ?
@@ -79,7 +113,10 @@ const LessonPanel = ({ id, setActivePanel, lessonId }) => {
 LessonPanel.propTypes = {
     id: PropTypes.string.isRequired,
     setActivePanel: PropTypes.func.isRequired,
-    lessonId: PropTypes.number
+    lessonId: PropTypes.number,
+    lessonState: PropTypes.object,
+    setLessonState: PropTypes.func.isRequired,
+    setVariantId: PropTypes.func.isRequired,
 };
 
 export default LessonPanel;

@@ -7,6 +7,8 @@ class Api
 		this.AUTH = 'user/auth';
 		this.LESSON_SEARCH = 'lesson/search';
 		this.LESSON_GET = 'lesson/get';
+		this.VARIANT_CREATE = 'variant/create';
+		this.VARIANT_GET = 'variant/get';
 
 		/**
 		 * @type ApiClient
@@ -32,12 +34,45 @@ class Api
 	}
 
 	/**
+	 * @typedef {object} VariantDto
+	 * @property {number} id
+	 * @property {boolean} isComplete
+	 * @property {number|null} expiredAt
+	 * @property {number|null} finishedAt
+	 * @property {object} question
+	 * @property {object|null} result
+	 */
+
+	/**
+	 * @returns {Promise<VariantDto>}
+	 */
+	async getVariant(id) {
+		const client = this.client;
+		return await client.postAuth(this.VARIANT_GET, {id: id});
+	}
+
+	/**
+	 * @typedef {object} IdDto
+	 * @property {number} id
+	 */
+
+	/**
+	 * @returns {Promise<IdDto>}
+	 */
+	async createVariant(lessonId) {
+		const client = this.client;
+		const transactionToken = this.generateToken();
+		return await client.postAuth(this.VARIANT_CREATE, {lessonId: lessonId, transactionToken: transactionToken});
+	}
+
+	/**
 	 * @typedef {object} LessonRichDto
 	 * @property {number} id
 	 * @property {string} title
 	 * @property {object} body
 	 * @property {boolean} isBookmark
 	 * @property {boolean} isComplete
+	 * @property {number|null} activeVariantId
 	 */
 
 	/**
@@ -83,7 +118,7 @@ class Api
 	async auth() {
 		const client = this.client;
 		const data = this.getQueryData();
-		data.transaction_token = this.getAuthTransactionToken();
+		data.transactionToken = this.getAuthTransactionToken();
 		const authDto = await client.post(this.AUTH, data);
 		this.storage.set(this.storage.TOKEN, authDto.token);
 		client.setToken(authDto.token);

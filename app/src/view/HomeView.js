@@ -14,11 +14,14 @@ import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder
 import Icon56InfoOutline from '@vkontakte/icons/dist/56/info_outline';
 import SearchPanel from "../panels/SearchPanel";
 import LessonPanel from "../panels/LessonPanel";
+import VariantPanel from "../panels/VariantPanel";
 
 const HomeView = ({ id, setActiveView }) => {
 
     const [activePanel, setActivePanel] = useState('menu');
     const [lessonId, setLessonId] = useState(null);
+    const [lessonState, setLessonState] = useState(null);
+    const [variantId, setVariantId] = useState(null);
 
     return (
         <View id={id} activePanel={activePanel}>
@@ -35,7 +38,19 @@ const HomeView = ({ id, setActiveView }) => {
                 </Group>
             </Panel>
             <SearchPanel id="search" setActivePanel={setActivePanel} setLessonId={setLessonId} />
-            <LessonPanel id="lesson" setActivePanel={setActivePanel} lessonId={lessonId} />
+            <LessonPanel
+                id="lesson"
+                setActivePanel={setActivePanel}
+                lessonId={lessonId}
+                lessonState={lessonState}
+                setLessonState={setLessonState}
+                setVariantId={setVariantId}
+            />
+            <VariantPanel
+                id="variant"
+                setActivePanel={setActivePanel}
+                variantId={variantId}
+            />
             <Panel id="bookmark">
                 <PanelHeader left={<PanelHeaderBack onClick={() => setActivePanel('menu')} />}>
                     Закладки
