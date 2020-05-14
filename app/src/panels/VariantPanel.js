@@ -8,18 +8,19 @@ import Title from '@vkontakte/vkui/dist/components/Typography/Title/Title';
 import Checkbox from '@vkontakte/vkui/dist/components/Checkbox/Checkbox';
 import FormLayout from '@vkontakte/vkui/dist/components/FormLayout/FormLayout';
 import FormLayoutGroup from '@vkontakte/vkui/dist/components/FormLayoutGroup/FormLayoutGroup';
-import {api} from "../lib/ApiInstance";
+import {api, createTransToken} from "../lib/ApiInstance";
 import PropTypes from "prop-types";
 import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
 import Icon56CheckCircleOutline from '@vkontakte/icons/dist/56/check_circle_outline';
 import Icon56DoNotDisturbOutline from '@vkontakte/icons/dist/56/do_not_disturb_outline';
 
-const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantState}) => {
+const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantState, lessonState, setLessonState}) => {
     const [variant, setVariant] = useState(null);
     const [qn, setQn] = useState(null); // current question number
     const [userAnswer, setUserAnswer] = useState(null);
     const [checked, setChecked] = useState(Array(100).fill(false));
     const [isComplete, setIsComplete] = useState(null);
+    const [finishTransToken, setFinishTransToken] = useState(createTransToken());
 
     const back = () => {
         setVariantState({
@@ -34,10 +35,18 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
         const userAnswerFormatted = {list: []};
         userAnswer.list.forEach((e) => {
             userAnswerFormatted.list.push(e.filter(el => el !== false));
-        })
-        const response = await api.finishVariant(variantId, userAnswerFormatted).catch(api.logError);
+        });
+        const response = await api.finishVariant(variantId, userAnswerFormatted, finishTransToken).catch(api.logError);
         if (response) {
             setIsComplete(response.isComplete);
+            setLessonState({
+                ...lessonState,
+                lesson: {
+                    ...lessonState.lesson,
+                    isComplete: response.isComplete,
+                    activeVariantId: null
+                }
+            });
         }
     }
 
@@ -159,6 +168,8 @@ VariantPanel.propTypes = {
     variantId: PropTypes.number,
     variantState: PropTypes.object,
     setVariantState: PropTypes.func.isRequired,
+    lessonState: PropTypes.object,
+    setLessonState: PropTypes.func.isRequired,
 };
 
 export default VariantPanel;

@@ -8,12 +8,13 @@ import Title from '@vkontakte/vkui/dist/components/Typography/Title/Title';
 import Text from '@vkontakte/vkui/dist/components/Typography/Text/Text';
 import FormLayout from '@vkontakte/vkui/dist/components/FormLayout/FormLayout';
 import FormLayoutGroup from '@vkontakte/vkui/dist/components/FormLayoutGroup/FormLayoutGroup';
-import {api} from "../lib/ApiInstance";
+import {api, createTransToken} from "../lib/ApiInstance";
 import PropTypes from "prop-types";
 
 const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState, setVariantId }) => {
     const [lesson, setLesson] = useState(null);
     const [isBookmark, setIsBookmark] = useState(null);
+    const [createVarTransToken, setCreateVarTransToken] = useState(createTransToken());
 
     const back = () => {
         setLessonState(null);
@@ -23,7 +24,7 @@ const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState
     const startVariant = async () => {
         let activeVariantId = lesson.activeVariantId;
         if (activeVariantId === null) {
-            const response = await api.createVariant(lessonId).catch(api.logError);
+            const response = await api.createVariant(lessonId, createVarTransToken).catch(api.logError);
             if (response) {
                 activeVariantId = response.id;
                 lesson.activeVariantId = activeVariantId;

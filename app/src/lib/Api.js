@@ -1,9 +1,8 @@
-import {uuid} from "uuidv4";
 import FetchError from "./FetchError";
 
 class Api
 {
-	constructor(client, storage) {
+	constructor(client) {
 		this.AUTH = 'user/auth';
 		this.LESSON_SEARCH = 'lesson/search';
 		this.LESSON_GET = 'lesson/get';
@@ -16,22 +15,14 @@ class Api
 		 * @protected
 		 */
 		this.client = client;
-
-		/**
-		 * @type {Storage}
-		 * @protected
-		 */
-		this.storage = storage;
-
-		this.init();
 	}
 
-	init() {
-		this.client.setToken(this.storage.get(this.storage.TOKEN));
+	getToken() {
+		return this.client.getToken();
 	}
 
-	getClient() {
-		return this.client;
+	setToken(token) {
+		this.client.setToken(token);
 	}
 
 	/**
@@ -40,11 +31,13 @@ class Api
 	 */
 
 	/**
+	 * @param {number} id
+	 * @param {object} userAnswer
+	 * @param {string} transactionToken
 	 * @returns {Promise<VariantFinishDto>}
 	 */
-	async finishVariant(id, userAnswer) {
+	async finishVariant(id, userAnswer, transactionToken) {
 		const client = this.client;
-		const transactionToken = this.generateToken();
 		return await client.postAuth(
 			this.VARIANT_FINISH,
 			{
@@ -79,11 +72,12 @@ class Api
 	 */
 
 	/**
+	 * @param {number} lessonId
+	 * @param {string} transactionToken
 	 * @returns {Promise<IdDto>}
 	 */
-	async createVariant(lessonId) {
+	async createVariant(lessonId, transactionToken) {
 		const client = this.client;
-		const transactionToken = this.generateToken();
 		return await client.postAuth(this.VARIANT_CREATE, {lessonId: lessonId, transactionToken: transactionToken});
 	}
 
@@ -135,31 +129,14 @@ class Api
 	 */
 
 	/**
+	 * @param {string} transactionToken
 	 * @returns {Promise<AuthDto>}
 	 */
-	async auth() {
+	async auth(transactionToken) {
 		const client = this.client;
 		const data = this.getQueryData();
-		data.transactionToken = this.getAuthTransactionToken();
-		const authDto = await client.post(this.AUTH, data);
-		this.storage.set(this.storage.TOKEN, authDto.token);
-		client.setToken(authDto.token);
-		return authDto;
-	}
-
-	/**
-	 * @returns {string}
-	 */
-	getAuthTransactionToken() {
-		const key = this.storage.AUTH_TRANSACTION_TOKEN;
-		const token = this.storage.get(key);
-		if (token) {
-			return token;
-		}
-
-		const newToken = this.generateToken();
-		this.storage.set(key, newToken);
-		return newToken;
+		data.transactionToken = transactionToken;
+		return await client.post(this.AUTH, data);
 	}
 
 	/**
@@ -168,10 +145,6 @@ class Api
 	getQueryData() {
 		const search = window.location.search.substring(1);
 		return JSON.parse('{"'+ decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
-	}
-
-	generateToken() {
-		return uuid();
 	}
 
 	logError(e) {

@@ -53,6 +53,8 @@ const HomeView = ({ id, setActiveView }) => {
                 variantId={variantId}
                 variantState={variantState}
                 setVariantState={setVariantState}
+                lessonState={lessonState}
+                setLessonState={setLessonState}
             />
             <Panel id="bookmark">
                 <PanelHeader left={<PanelHeaderBack onClick={() => setActivePanel('menu')} />}>
