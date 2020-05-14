@@ -90,10 +90,15 @@ const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState
                 </div>
                 <FormLayout>
                     <FormLayoutGroup>
-                        <Button size="xl" mode="primary" onClick={startVariant}>
-                            {lesson.activeVariantId ? 'Продолжить тест' : 'Начать тест'}
-                        </Button>
-
+                        {lesson && lesson.isComplete === false ?
+                            <Button size="xl" mode="primary" onClick={startVariant}>
+                                {lesson.activeVariantId ? 'Продолжить тест' : 'Начать тест'}
+                            </Button>
+                        :
+                            <Button size="xl" mode="commerce">
+                                Тест пройден
+                            </Button>
+                        }
                         {isBookmark ?
                             <Button size="xl" mode="secondary">
                                 Убрать из закладок

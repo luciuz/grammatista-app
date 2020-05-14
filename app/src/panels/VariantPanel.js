@@ -134,7 +134,7 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
                     {isComplete ?
                         <Placeholder
                             icon={<Icon56CheckCircleOutline style={{ color: 'var(--dynamic_green)' }}/>}
-                            header="Пройдено!"
+                            header="Тест пройден!"
                         >
                             Вы великолепны
                         </Placeholder>
