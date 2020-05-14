@@ -9,6 +9,7 @@ class Api
 		this.LESSON_GET = 'lesson/get';
 		this.VARIANT_CREATE = 'variant/create';
 		this.VARIANT_GET = 'variant/get';
+		this.VARIANT_FINISH = 'variant/finish';
 
 		/**
 		 * @type ApiClient
@@ -31,6 +32,24 @@ class Api
 
 	getClient() {
 		return this.client;
+	}
+
+	/**
+	 * @typedef {object} VariantDto
+	 * @property {number} id
+	 * @property {boolean} isComplete
+	 * @property {number|null} expiredAt
+	 * @property {number|null} finishedAt
+	 * @property {object} question
+	 * @property {object|null} result
+	 */
+
+	/**
+	 * @returns {Promise<VariantDto>}
+	 */
+	async finishVariant(id, userAnswer) {
+		const client = this.client;
+		return await client.postAuth(this.VARIANT_FINISH, {id: id, userAnswer: userAnswer});
 	}
 
 	/**
