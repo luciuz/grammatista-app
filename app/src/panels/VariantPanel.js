@@ -10,12 +10,16 @@ import FormLayout from '@vkontakte/vkui/dist/components/FormLayout/FormLayout';
 import FormLayoutGroup from '@vkontakte/vkui/dist/components/FormLayoutGroup/FormLayoutGroup';
 import {api} from "../lib/ApiInstance";
 import PropTypes from "prop-types";
+import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
+import Icon56CheckCircleOutline from '@vkontakte/icons/dist/56/check_circle_outline';
+import Icon56DoNotDisturbOutline from '@vkontakte/icons/dist/56/do_not_disturb_outline';
 
 const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantState}) => {
     const [variant, setVariant] = useState(null);
     const [qn, setQn] = useState(null); // current question number
     const [userAnswer, setUserAnswer] = useState(null);
     const [checked, setChecked] = useState(Array(100).fill(false));
+    const [isComplete, setIsComplete] = useState(null);
 
     const back = () => {
         setVariantState({
@@ -24,6 +28,17 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
             userAnswer: userAnswer
         });
         setActivePanel('lesson');
+    }
+
+    const finish = async () => {
+        const userAnswerFormatted = {list: []};
+        userAnswer.list.forEach((e) => {
+            userAnswerFormatted.list.push(e.filter(el => el !== false));
+        })
+        const response = await api.finishVariant(variantId, userAnswerFormatted).catch(api.logError);
+        if (response) {
+            setIsComplete(response.isComplete);
+        }
     }
 
     const changeOption = (i) => {
@@ -42,6 +57,8 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
     const next = () => {
         if (canNext()) {
             setQn(qn+1);
+        } else {
+            finish();
         }
     }
 
@@ -83,7 +100,7 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
             <PanelHeader left={<PanelHeaderBack onClick={back} />}>
                 Тестирование
             </PanelHeader>
-                {variant && <Div>
+                {isComplete === null && variant && <Div>
                     {variant.question.list[qn] && <div>
                         <Title level="1" weight="semibold" style={{ marginBottom: 16 }}>
                             {variant.question.list[qn].title}
@@ -112,6 +129,26 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
                         </FormLayout>
                     </div>}
             </Div>}
+            {isComplete !== null &&
+                <Div>
+                    {isComplete ?
+                        <Placeholder
+                            icon={<Icon56CheckCircleOutline style={{ color: 'var(--dynamic_green)' }}/>}
+                            header="Пройдено!"
+                        >
+                            Вы великолепны
+                        </Placeholder>
+                        :
+                        <Placeholder
+                            icon={<Icon56DoNotDisturbOutline style={{ color: 'var(--dynamic_red)' }}/>}
+                            header="Не пройдено!"
+                            action={<Button size="l">Подробнее</Button>}
+                        >
+                            Выше нос
+                        </Placeholder>
+                    }
+                </Div>
+            }
         </Panel>
     );
 }

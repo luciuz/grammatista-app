@@ -35,21 +35,24 @@ class Api
 	}
 
 	/**
-	 * @typedef {object} VariantDto
-	 * @property {number} id
+	 * @typedef {object} VariantFinishDto
 	 * @property {boolean} isComplete
-	 * @property {number|null} expiredAt
-	 * @property {number|null} finishedAt
-	 * @property {object} question
-	 * @property {object|null} result
 	 */
 
 	/**
-	 * @returns {Promise<VariantDto>}
+	 * @returns {Promise<VariantFinishDto>}
 	 */
 	async finishVariant(id, userAnswer) {
 		const client = this.client;
-		return await client.postAuth(this.VARIANT_FINISH, {id: id, userAnswer: userAnswer});
+		const transactionToken = this.generateToken();
+		return await client.postAuth(
+			this.VARIANT_FINISH,
+			{
+				id: id,
+				userAnswer: userAnswer,
+				transactionToken: transactionToken
+			}
+		);
 	}
 
 	/**
