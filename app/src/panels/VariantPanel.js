@@ -23,11 +23,15 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
     const [finishTransToken, setFinishTransToken] = useState(createTransToken());
 
     const back = () => {
-        setVariantState({
-            variant: variant,
-            qn: qn,
-            userAnswer: userAnswer
-        });
+        if (isComplete === null) {
+            setVariantState({
+                variant: variant,
+                qn: qn,
+                userAnswer: userAnswer
+            });
+        } else {
+            setVariantState(null);
+        }
         setActivePanel('lesson');
     }
 
