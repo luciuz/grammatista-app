@@ -22,6 +22,7 @@ const HomeView = ({ id, setActiveView }) => {
     const [lessonId, setLessonId] = useState(null);
     const [lessonState, setLessonState] = useState(null);
     const [variantId, setVariantId] = useState(null);
+    const [variantState, setVariantState] = useState(null);
 
     return (
         <View id={id} activePanel={activePanel}>
@@ -50,6 +51,8 @@ const HomeView = ({ id, setActiveView }) => {
                 id="variant"
                 setActivePanel={setActivePanel}
                 variantId={variantId}
+                variantState={variantState}
+                setVariantState={setVariantState}
             />
             <Panel id="bookmark">
                 <PanelHeader left={<PanelHeaderBack onClick={() => setActivePanel('menu')} />}>
