@@ -52,9 +52,9 @@ const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState
         if (!lesson) {
             if (lessonState) {
                 const lessonLS = lessonState.lesson;
-                window.scrollTo(0, lessonState.scrollY);
                 setIsBookmark(lessonLS.isBookmark);
                 setLesson(lessonLS);
+                window.scrollTo(0, lessonState.scrollY);
             } else {
                 fetchData();
             }

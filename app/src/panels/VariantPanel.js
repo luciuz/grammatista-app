@@ -14,7 +14,7 @@ import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder
 import Icon56CheckCircleOutline from '@vkontakte/icons/dist/56/check_circle_outline';
 import Icon56DoNotDisturbOutline from '@vkontakte/icons/dist/56/do_not_disturb_outline';
 
-const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantState, lessonState, setLessonState}) => {
+const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantState, lessonState, setLessonState }) => {
     const [variant, setVariant] = useState(null);
     const [qn, setQn] = useState(null); // current question number
     const [userAnswer, setUserAnswer] = useState(null);

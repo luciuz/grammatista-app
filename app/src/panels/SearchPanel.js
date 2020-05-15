@@ -13,14 +13,23 @@ import Group from "@vkontakte/vkui/dist/components/Group/Group";
 import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
 import Icon56InfoOutline from '@vkontakte/icons/dist/56/info_outline';
 
-const SearchPanel = ({ id, setActivePanel, setLessonId }) => {
+const SearchPanel = ({ id, setActivePanel, setLessonId, searchState, setSearchState }) => {
     const [q, setQ] = useState('');
     const [lastQ, setLastQ] = useState('');
-    const [rowsLeft, setRowsLeft] = useState(null);
-    const [maxId, setMaxId] = useState(null);
-    const [result, setResult] = useState(null);
+    const [searchResult, setSearchResult] = useState(null);
+
+    const back = () => {
+        setSearchState(null);
+        setActivePanel('menu');
+    }
 
     const doLesson = (id) => {
+        setSearchState({
+            q: q,
+            lastQ: lastQ,
+            searchResult: searchResult,
+            scrollY: window.pageYOffset
+        });
         setLessonId(id);
         setActivePanel('lesson');
     }
@@ -29,47 +38,55 @@ const SearchPanel = ({ id, setActivePanel, setLessonId }) => {
         if (q && q !== lastQ) {
             setLastQ(q);
             const response = await api.lessonSearch(q, null).catch(api.logError);
-            let result = null;
             if (response) {
-                setRowsLeft(response.rowsLeft);
-                setMaxId(response.maxId);
-                result = response.list;
+                setSearchResult(response);
             }
-            setResult(result);
         }
-    };
+    }
 
     const doKeyDown = async (e) => {
         if (e.key === 'Enter') {
             await doSearch();
         }
-    };
+    }
 
     useEffect(() => {
-        if (q === '' && result !== null) {
-            setResult(null);
+        if (q === '' && searchResult && searchResult.list.length) {
+            setSearchState(null);
+            setSearchResult(null);
         }
-    }, [q, result]);
+    }, [q, searchResult, setSearchState]);
+
+    useEffect(() => {
+        if (searchResult === null) {
+            if (searchState) {
+                setQ(searchState.q);
+                setLastQ(searchState.lastQ);
+                setSearchResult(searchState.searchResult);
+                window.scrollTo(0, searchState.scrollY);
+            }
+        }
+    }, [searchResult, searchState]);
 
     return (
         <Panel id={id}>
-            <PanelHeader left={<PanelHeaderBack onClick={() => setActivePanel('menu')} />}>
+            <PanelHeader left={<PanelHeaderBack onClick={back} />}>
                 Поиск
             </PanelHeader>
             <Search value={q} onChange={(e) => setQ(e.target.value)} onBlur={doSearch} onKeyDown={doKeyDown} />
-            {result === null ?
+            {searchResult === null ?
                 <Div>
                     <Header mode="secondary">Информация</Header>
                     <Text weight="regular" style={{ marginBottom: 16 }}>
-                        Введите название материала, например, <b>урок</b>
+                        Введите название материала, например, <b>дроби</b>
                     </Text>
                 </Div>
                 :
                 <Div>
-                    {result && result.length ?
+                    {searchResult && searchResult.list.length ?
                         <Group>
                             <Header mode="secondary">Результаты поиска</Header>
-                            {result.map((item) =>
+                            {searchResult.list.map((item) =>
                                 <SimpleCell expandable key={item.id} onClick={doLesson.bind(this, item.id)}>
                                     {item.title}
                                 </SimpleCell>
@@ -89,7 +106,9 @@ const SearchPanel = ({ id, setActivePanel, setLessonId }) => {
 SearchPanel.propTypes = {
     id: PropTypes.string.isRequired,
     setActivePanel: PropTypes.func.isRequired,
-    setLessonId: PropTypes.func.isRequired
+    setLessonId: PropTypes.func.isRequired,
+    searchState: PropTypes.object,
+    setSearchState: PropTypes.func.isRequired,
 };
 
 export default SearchPanel;

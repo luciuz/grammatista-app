@@ -19,6 +19,7 @@ import VariantPanel from "../panels/VariantPanel";
 const HomeView = ({ id, setActiveView }) => {
 
     const [activePanel, setActivePanel] = useState('menu');
+    const [searchState, setSearchState] = useState(null);
     const [lessonId, setLessonId] = useState(null);
     const [lessonState, setLessonState] = useState(null);
     const [variantId, setVariantId] = useState(null);
@@ -38,7 +39,13 @@ const HomeView = ({ id, setActiveView }) => {
                     </List>
                 </Group>
             </Panel>
-            <SearchPanel id="search" setActivePanel={setActivePanel} setLessonId={setLessonId} />
+            <SearchPanel
+                id="search"
+                setActivePanel={setActivePanel}
+                setLessonId={setLessonId}
+                searchState={searchState}
+                setSearchState={setSearchState}
+            />
             <LessonPanel
                 id="lesson"
                 setActivePanel={setActivePanel}
