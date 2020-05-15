@@ -31,11 +31,13 @@ const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState
             const response = await api.deleteBookmark(lessonId, delBMTransToken).catch(api.logError);
             if (response) {
                 setIsBookmark(false);
+                setDelBMTransToken(createTransToken());
             }
         } else {
             const response = await api.setBookmark(lessonId, setBMTransToken).catch(api.logError);
             if (response) {
                 setIsBookmark(true);
+                setSetBMTransToken(createTransToken());
             }
         }
     }
@@ -48,6 +50,7 @@ const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState
                 activeVariantId = response.id;
                 lesson.activeVariantId = activeVariantId;
                 setLesson(lesson);
+                setCreateVarTransToken(createTransToken());
             }
         }
 

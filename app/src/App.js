@@ -47,7 +47,9 @@ const App = () => {
 				if (response) {
 					api.setToken(response.token);
 					storage.set(storage.TOKEN, response.token);
-					view = response.view;
+					if (response.view) {
+						view = response.view;
+					}
 				}
 			}
 			setPopout(null);
