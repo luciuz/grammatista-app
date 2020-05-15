@@ -13,7 +13,7 @@ import Group from "@vkontakte/vkui/dist/components/Group/Group";
 import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
 import Icon56InfoOutline from '@vkontakte/icons/dist/56/info_outline';
 
-const SearchPanel = ({ id, setActivePanel, setLessonId, searchState, setSearchState }) => {
+const SearchPanel = ({ id, setActivePanel, setLessonId, searchState, setSearchState, setLessonBack }) => {
     const [q, setQ] = useState('');
     const [lastQ, setLastQ] = useState('');
     const [searchResult, setSearchResult] = useState(null);
@@ -24,6 +24,7 @@ const SearchPanel = ({ id, setActivePanel, setLessonId, searchState, setSearchSt
     }
 
     const doLesson = (id) => {
+        setLessonBack('search');
         setSearchState({
             q: q,
             lastQ: lastQ,
@@ -109,6 +110,7 @@ SearchPanel.propTypes = {
     setLessonId: PropTypes.func.isRequired,
     searchState: PropTypes.object,
     setSearchState: PropTypes.func.isRequired,
+    setLessonBack: PropTypes.func.isRequired,
 };
 
 export default SearchPanel;

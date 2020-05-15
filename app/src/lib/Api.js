@@ -11,6 +11,7 @@ class Api
 		this.VARIANT_FINISH = 'variant/finish';
 		this.BOOKMARK_SET = 'bookmark/set';
 		this.BOOKMARK_DELETE = 'bookmark/delete';
+		this.BOOKMARK_LIST = 'bookmark/list';
 
 		/**
 		 * @type ApiClient
@@ -25,6 +26,30 @@ class Api
 
 	setToken(token) {
 		this.client.setToken(token);
+	}
+
+	/**
+	 * @typedef {object} BookmarkListDto
+	 * @property {array.<BookmarkListItem>} list
+	 * @property {number|null} rowsLeft
+	 * @property {number|null} maxId
+	 */
+
+	/**
+	 * @typedef {object} BookmarkListItem
+	 * @property {number} id
+	 * @property {number} lessonId
+	 * @property {string} title
+	 * @property {boolean} isComplete
+	 */
+
+	/**
+	 * @param {number|null} maxId
+	 * @returns {Promise<BookmarkListDto>}
+	 */
+	async bookmarkList(maxId) {
+		const client = this.client;
+		return await client.postAuth(this.BOOKMARK_LIST, {maxId: maxId});
 	}
 
 	/**

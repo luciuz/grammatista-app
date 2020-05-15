@@ -15,6 +15,7 @@ import Icon56InfoOutline from '@vkontakte/icons/dist/56/info_outline';
 import SearchPanel from "../panels/SearchPanel";
 import LessonPanel from "../panels/LessonPanel";
 import VariantPanel from "../panels/VariantPanel";
+import BookmarkPanel from "../panels/BookmarkPanel";
 
 const HomeView = ({ id, setActiveView }) => {
 
@@ -24,6 +25,8 @@ const HomeView = ({ id, setActiveView }) => {
     const [lessonState, setLessonState] = useState(null);
     const [variantId, setVariantId] = useState(null);
     const [variantState, setVariantState] = useState(null);
+    const [bookmarkState, setBookmarkState] = useState(null);
+    const [lessonBack, setLessonBack] = useState('search');
 
     return (
         <View id={id} activePanel={activePanel}>
@@ -45,6 +48,7 @@ const HomeView = ({ id, setActiveView }) => {
                 setLessonId={setLessonId}
                 searchState={searchState}
                 setSearchState={setSearchState}
+                setLessonBack={setLessonBack}
             />
             <LessonPanel
                 id="lesson"
@@ -53,6 +57,8 @@ const HomeView = ({ id, setActiveView }) => {
                 lessonState={lessonState}
                 setLessonState={setLessonState}
                 setVariantId={setVariantId}
+                lessonBack={lessonBack}
+                setBookmarkState={setBookmarkState}
             />
             <VariantPanel
                 id="variant"
@@ -63,16 +69,14 @@ const HomeView = ({ id, setActiveView }) => {
                 lessonState={lessonState}
                 setLessonState={setLessonState}
             />
-            <Panel id="bookmark">
-                <PanelHeader left={<PanelHeaderBack onClick={() => setActivePanel('menu')} />}>
-                    Закладки
-                </PanelHeader>
-                <Placeholder
-                    icon={<Icon56InfoOutline />}
-                >
-                    У вас еще нет ни одной закладки
-                </Placeholder>
-            </Panel>
+            <BookmarkPanel
+                id="bookmark"
+                setActivePanel={setActivePanel}
+                setLessonId={setLessonId}
+                bookmarkState={bookmarkState}
+                setBookmarkState={setBookmarkState}
+                setLessonBack={setLessonBack}
+            />
             <Panel id="done">
                 <PanelHeader left={<PanelHeaderBack onClick={() => setActivePanel('menu')} />}>
                     Пройдено

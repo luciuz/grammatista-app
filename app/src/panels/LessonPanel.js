@@ -14,7 +14,7 @@ import Icon28Favorite from '@vkontakte/icons/dist/28/favorite';
 import {api, createTransToken} from "../lib/ApiInstance";
 import PropTypes from "prop-types";
 
-const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState, setVariantId }) => {
+const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState, setVariantId, lessonBack, setBookmarkState }) => {
     const [lesson, setLesson] = useState(null);
     const [isBookmark, setIsBookmark] = useState(null);
     const [createVarTransToken, setCreateVarTransToken] = useState(createTransToken());
@@ -22,8 +22,11 @@ const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState
     const [setBMTransToken, setSetBMTransToken] = useState(createTransToken());
 
     const back = () => {
+        if (!isBookmark && lessonBack === 'bookmark') {
+            setBookmarkState(null);
+        }
         setLessonState(null);
-        setActivePanel('search');
+        setActivePanel(lessonBack);
     };
 
     const doBookmark = async () => {
@@ -141,6 +144,8 @@ LessonPanel.propTypes = {
     lessonState: PropTypes.object,
     setLessonState: PropTypes.func.isRequired,
     setVariantId: PropTypes.func.isRequired,
+    lessonBack: PropTypes.string.isRequired,
+    setBookmarkState: PropTypes.func.isRequired,
 };
 
 export default LessonPanel;
