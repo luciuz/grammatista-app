@@ -3,11 +3,14 @@ import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
 import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
 import Button from '@vkontakte/vkui/dist/components/Button/Button';
 import PanelHeaderBack from '@vkontakte/vkui/dist/components/PanelHeaderBack/PanelHeaderBack';
+import PanelHeaderButton from "@vkontakte/vkui/dist/components/PanelHeaderButton/PanelHeaderButton";
 import Div from '@vkontakte/vkui/dist/components/Div/Div';
 import Title from '@vkontakte/vkui/dist/components/Typography/Title/Title';
 import Text from '@vkontakte/vkui/dist/components/Typography/Text/Text';
 import FormLayout from '@vkontakte/vkui/dist/components/FormLayout/FormLayout';
 import FormLayoutGroup from '@vkontakte/vkui/dist/components/FormLayoutGroup/FormLayoutGroup';
+import Icon28FavoriteOutline from '@vkontakte/icons/dist/28/favorite_outline';
+import Icon28Favorite from '@vkontakte/icons/dist/28/favorite';
 import {api, createTransToken} from "../lib/ApiInstance";
 import PropTypes from "prop-types";
 
@@ -15,11 +18,27 @@ const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState
     const [lesson, setLesson] = useState(null);
     const [isBookmark, setIsBookmark] = useState(null);
     const [createVarTransToken, setCreateVarTransToken] = useState(createTransToken());
+    const [delBMTransToken, setDelBMTransToken] = useState(createTransToken());
+    const [setBMTransToken, setSetBMTransToken] = useState(createTransToken());
 
     const back = () => {
         setLessonState(null);
         setActivePanel('search');
     };
+
+    const doBookmark = async () => {
+        if (isBookmark) {
+            const response = await api.deleteBookmark(lessonId, delBMTransToken).catch(api.logError);
+            if (response) {
+                setIsBookmark(false);
+            }
+        } else {
+            const response = await api.setBookmark(lessonId, setBMTransToken).catch(api.logError);
+            if (response) {
+                setIsBookmark(true);
+            }
+        }
+    }
 
     const startVariant = async () => {
         let activeVariantId = lesson.activeVariantId;
@@ -63,7 +82,12 @@ const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState
 
     return (
         <Panel id={id}>
-            <PanelHeader left={<PanelHeaderBack onClick={back} />}>
+            <PanelHeader left={[
+                <PanelHeaderBack key="back" onClick={back} />,
+                <PanelHeaderButton key="fav" onClick={doBookmark}>
+                    {isBookmark ? <Icon28Favorite/> : <Icon28FavoriteOutline />}
+                </PanelHeaderButton>
+            ]}>
                 Материал
             </PanelHeader>
                 {lesson && <Div>
@@ -98,15 +122,6 @@ const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState
                         :
                             <Button size="xl" mode="commerce">
                                 Тест пройден
-                            </Button>
-                        }
-                        {isBookmark ?
-                            <Button size="xl" mode="secondary">
-                                Убрать из закладок
-                            </Button>
-                            :
-                            <Button size="xl" mode="secondary">
-                                Добавить в закладки
                             </Button>
                         }
                     </FormLayoutGroup>

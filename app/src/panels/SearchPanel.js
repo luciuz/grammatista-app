@@ -51,7 +51,7 @@ const SearchPanel = ({ id, setActivePanel, setLessonId, searchState, setSearchSt
     }
 
     useEffect(() => {
-        if (q === '' && searchResult && searchResult.list.length) {
+        if (q === '' && searchResult) {
             setSearchState(null);
             setSearchResult(null);
         }

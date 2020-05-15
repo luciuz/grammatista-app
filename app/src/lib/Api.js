@@ -9,6 +9,8 @@ class Api
 		this.VARIANT_CREATE = 'variant/create';
 		this.VARIANT_GET = 'variant/get';
 		this.VARIANT_FINISH = 'variant/finish';
+		this.BOOKMARK_SET = 'bookmark/set';
+		this.BOOKMARK_DELETE = 'bookmark/delete';
 
 		/**
 		 * @type ApiClient
@@ -23,6 +25,40 @@ class Api
 
 	setToken(token) {
 		this.client.setToken(token);
+	}
+
+	/**
+	 * @param {number} lessonId
+	 * @param {string} transactionToken
+	 * @returns {Promise<boolean>}
+	 */
+	async deleteBookmark(lessonId, transactionToken) {
+		const client = this.client;
+		const response = await client.postAuth(
+			this.BOOKMARK_DELETE,
+			{
+				lessonId: lessonId,
+				transactionToken: transactionToken
+			}
+		);
+		return Boolean(response);
+	}
+
+	/**
+	 * @param {number} lessonId
+	 * @param {string} transactionToken
+	 * @returns {Promise<boolean>}
+	 */
+	async setBookmark(lessonId, transactionToken) {
+		const client = this.client;
+		const response = client.postAuth(
+			this.BOOKMARK_SET,
+			{
+				lessonId: lessonId,
+				transactionToken: transactionToken
+			}
+		);
+		return Boolean(response);
 	}
 
 	/**
