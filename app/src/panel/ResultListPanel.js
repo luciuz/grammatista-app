@@ -14,6 +14,7 @@ import Icon28DoneOutline from '@vkontakte/icons/dist/28/done_outline';
 import Icon28CancelOutline from '@vkontakte/icons/dist/28/cancel_outline';
 import Icon28ChevronRightOutline from '@vkontakte/icons/dist/28/chevron_right_outline';
 import { platform, IOS } from '@vkontakte/vkui';
+import { format } from 'date-fns'
 
 const osName = platform();
 
@@ -77,7 +78,7 @@ const ResultListPanel = ({ id, setActivePanel, setVariantId, resultListState, se
                                         <Icon28CancelOutline style={{color: 'var(--dynamic_red)', marginRight: 10 }} />
                                     }
                                     after={osName === IOS && <Icon28ChevronRightOutline />}
-                                    caption={'#' + item.id}
+                                    caption={'#' + item.id + ' | ' + format(new Date(item.finishedAt * 1000), 'dd-MM-yyyy HH:mm')}
                                 >
                                     {item.title}
                                 </RichCell>
