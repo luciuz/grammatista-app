@@ -12,10 +12,10 @@ import Icon28ListCheckOutline from '@vkontakte/icons/dist/28/list_check_outline'
 import PropTypes from "prop-types";
 import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
 import Icon56InfoOutline from '@vkontakte/icons/dist/56/info_outline';
-import SearchPanel from "../panels/SearchPanel";
-import LessonPanel from "../panels/LessonPanel";
-import VariantPanel from "../panels/VariantPanel";
-import BookmarkPanel from "../panels/BookmarkPanel";
+import SearchPanel from "../panel/SearchPanel";
+import LessonPanel from "../panel/LessonPanel";
+import VariantPanel from "../panel/VariantPanel";
+import BookmarkPanel from "../panel/BookmarkPanel";
 
 const HomeView = ({ id, setActiveView }) => {
 
