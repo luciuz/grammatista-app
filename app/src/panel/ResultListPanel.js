@@ -51,7 +51,7 @@ const ResultListPanel = ({ id, setActivePanel, setVariantId, resultListState, se
     return (
         <Panel id={id}>
             <PanelHeader left={<PanelHeaderBack onClick={back} />}>
-                Закладки
+                Результаты
             </PanelHeader>
             {resultListResult === null ?
                 <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>

@@ -38,7 +38,7 @@ const ResultPanel = ({ id, setActivePanel, variantId, resultBack}) => {
 ResultPanel.propTypes = {
     id: PropTypes.string.isRequired,
     setActivePanel: PropTypes.func.isRequired,
-    variantId: PropTypes.func.isRequired,
+    variantId: PropTypes.number,
     resultBack: PropTypes.string.isRequired,
 };
 
