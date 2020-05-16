@@ -85,14 +85,16 @@ const SearchPanel = ({ id, setActivePanel, setLessonId, searchState, setSearchSt
                 :
                 <div>
                     {searchResult === null ?
-                        <Div>
+                        <div>
                             <Header mode="secondary">Информация</Header>
-                            <Text weight="regular" style={{ marginBottom: 16 }}>
-                                Введите название материала, например, <b>дроби</b>
-                            </Text>
-                        </Div>
+                            <Div>
+                                <Text weight="regular" style={{ marginBottom: 16 }}>
+                                    Введите название материала, например, <b>дроби</b>
+                                </Text>
+                            </Div>
+                        </div>
                         :
-                        <Div>
+                        <div>
                             {searchResult && searchResult.list.length ?
                                 <Group>
                                     <Header mode="secondary">Результаты поиска</Header>
@@ -107,7 +109,7 @@ const SearchPanel = ({ id, setActivePanel, setLessonId, searchState, setSearchSt
                                     Ничего не найдено
                                 </Placeholder>
                             }
-                        </Div>
+                        </div>
                     }
                 </div>
             }

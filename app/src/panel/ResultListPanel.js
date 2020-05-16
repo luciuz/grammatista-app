@@ -4,7 +4,6 @@ import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader
 import PanelHeaderBack from '@vkontakte/vkui/dist/components/PanelHeaderBack/PanelHeaderBack';
 import PropTypes from "prop-types";
 import RichCell from "@vkontakte/vkui/dist/components/RichCell/RichCell";
-import Div from "@vkontakte/vkui/dist/components/Div/Div";
 import {api} from "../lib/ApiInstance";
 import Group from "@vkontakte/vkui/dist/components/Group/Group";
 import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
@@ -65,26 +64,25 @@ const ResultListPanel = ({ id, setActivePanel, setVariantId, resultListState, se
                     <Spinner size="small" style={{ marginTop: 20 }} />
                 </div>
                 :
-                (resultListResult && resultListResult.list.length ? <Div>
-                        <Group>
-                            {resultListResult.list.map((item) =>
-                                <RichCell
-                                    key={item.id}
-                                    onClick={doResult.bind(this, item.id)}
-                                    multiline
-                                    before={item.isComplete ?
-                                        <Icon28DoneOutline style={{color: 'var(--dynamic_green)', marginRight: 10 }} />
-                                        :
-                                        <Icon28CancelOutline style={{color: 'var(--dynamic_red)', marginRight: 10 }} />
-                                    }
-                                    after={osName === IOS && <Icon28ChevronRightOutline />}
-                                    caption={'#' + item.id + ' | ' + format(new Date(item.finishedAt * 1000), 'dd-MM-yyyy HH:mm')}
-                                >
-                                    {item.title}
-                                </RichCell>
-                            )}
-                        </Group>
-                    </Div>
+                (resultListResult && resultListResult.list.length ?
+                    <Group>
+                        {resultListResult.list.map((item) =>
+                            <RichCell
+                                key={item.id}
+                                onClick={doResult.bind(this, item.id)}
+                                multiline
+                                before={item.isComplete ?
+                                    <Icon28DoneOutline style={{color: 'var(--dynamic_green)', marginRight: 10 }} />
+                                    :
+                                    <Icon28CancelOutline style={{color: 'var(--dynamic_red)', marginRight: 10 }} />
+                                }
+                                after={osName === IOS && <Icon28ChevronRightOutline />}
+                                caption={'#' + item.id + ' | ' + format(new Date(item.finishedAt * 1000), 'dd-MM-yyyy HH:mm')}
+                            >
+                                {item.title}
+                            </RichCell>
+                        )}
+                    </Group>
                     :
                     <Placeholder icon={<Icon56InfoOutline />}>
                         У вас еще нет никаких результатов

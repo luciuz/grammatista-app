@@ -4,7 +4,6 @@ import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader
 import PanelHeaderBack from '@vkontakte/vkui/dist/components/PanelHeaderBack/PanelHeaderBack';
 import PropTypes from "prop-types";
 import SimpleCell from "@vkontakte/vkui/dist/components/SimpleCell/SimpleCell";
-import Div from "@vkontakte/vkui/dist/components/Div/Div";
 import {api} from "../lib/ApiInstance";
 import Group from "@vkontakte/vkui/dist/components/Group/Group";
 import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
@@ -58,7 +57,7 @@ const BookmarkPanel = ({ id, setActivePanel, setLessonId, bookmarkState, setBook
                     <Spinner size="small" style={{ marginTop: 20 }} />
                 </div>
                 :
-                (bookmarkResult && bookmarkResult.list.length ? <Div>
+                (bookmarkResult && bookmarkResult.list.length ?
                         <Group>
                             {bookmarkResult.list.map((item) =>
                                 <SimpleCell expandable key={item.id} onClick={doLesson.bind(this, item.lessonId)}>
@@ -66,7 +65,6 @@ const BookmarkPanel = ({ id, setActivePanel, setLessonId, bookmarkState, setBook
                                 </SimpleCell>
                             )}
                         </Group>
-                    </Div>
                     :
                     <Placeholder icon={<Icon56InfoOutline />}>
                         У вас еще нет ни одной закладки
