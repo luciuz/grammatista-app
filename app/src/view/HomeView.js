@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import View from "@vkontakte/vkui/dist/components/View/View";
 import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
 import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
-import PanelHeaderBack from '@vkontakte/vkui/dist/components/PanelHeaderBack/PanelHeaderBack';
 import Group from '@vkontakte/vkui/dist/components/Group/Group';
 import List from '@vkontakte/vkui/dist/components/List/List';
 import Cell from "@vkontakte/vkui/dist/components/Cell/Cell";
@@ -10,12 +9,12 @@ import Icon28SearchOutline from '@vkontakte/icons/dist/28/search_outline';
 import Icon28FavoriteOutline from '@vkontakte/icons/dist/28/favorite_outline';
 import Icon28ListCheckOutline from '@vkontakte/icons/dist/28/list_check_outline';
 import PropTypes from "prop-types";
-import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
-import Icon56InfoOutline from '@vkontakte/icons/dist/56/info_outline';
 import SearchPanel from "../panel/SearchPanel";
 import LessonPanel from "../panel/LessonPanel";
 import VariantPanel from "../panel/VariantPanel";
 import BookmarkPanel from "../panel/BookmarkPanel";
+import ResultPanel from "../panel/ResultPanel";
+import ResultListPanel from "../panel/ResultListPanel";
 
 const HomeView = ({ id, setActiveView }) => {
 
@@ -27,6 +26,8 @@ const HomeView = ({ id, setActiveView }) => {
     const [variantState, setVariantState] = useState(null);
     const [bookmarkState, setBookmarkState] = useState(null);
     const [lessonBack, setLessonBack] = useState('search');
+    const [resultListState, setResultListState] = useState(null);
+    const [resultBack, setResultBack] = useState('variant');
 
     return (
         <View id={id} activePanel={activePanel}>
@@ -38,7 +39,7 @@ const HomeView = ({ id, setActiveView }) => {
                     <List>
                         <Cell expandable before={<Icon28SearchOutline />} onClick={() => setActivePanel('search')}>Поиск</Cell>
                         <Cell expandable before={<Icon28FavoriteOutline />} onClick={() => setActivePanel('bookmark')}>Закладки</Cell>
-                        <Cell expandable before={<Icon28ListCheckOutline />} onClick={() => setActivePanel('done')}>Пройдено</Cell>
+                        <Cell expandable before={<Icon28ListCheckOutline />} onClick={() => setActivePanel('result-list')}>Результаты</Cell>
                     </List>
                 </Group>
             </Panel>
@@ -77,16 +78,20 @@ const HomeView = ({ id, setActiveView }) => {
                 setBookmarkState={setBookmarkState}
                 setLessonBack={setLessonBack}
             />
-            <Panel id="done">
-                <PanelHeader left={<PanelHeaderBack onClick={() => setActivePanel('menu')} />}>
-                    Пройдено
-                </PanelHeader>
-                <Placeholder
-                    icon={<Icon56InfoOutline />}
-                >
-                    У вас еще нет ни одного пройденного материала
-                </Placeholder>
-            </Panel>
+            <ResultListPanel
+                id="result-list"
+                setActivePanel={setActivePanel}
+                setVariantId={setVariantId}
+                resultListState={resultListState}
+                setResultListState={setResultListState}
+                setResultBack={setResultBack}
+            />
+            <ResultPanel
+                id="result"
+                setActivePanel={setActivePanel}
+                variantId={variantId}
+                resultBack={resultBack}
+            />
         </View>
     );
 }

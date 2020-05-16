@@ -27,7 +27,8 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
             setVariantState({
                 variant: variant,
                 qn: qn,
-                userAnswer: userAnswer
+                userAnswer: userAnswer,
+                finishTransToken: finishTransToken
             });
         } else {
             setVariantState(null);
@@ -93,6 +94,7 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
 
         if (!variant) {
             if (variantState) {
+                setFinishTransToken(variantState.finishTransToken);
                 setUserAnswer(variantState.userAnswer);
                 setQn(variantState.qn);
                 setVariant(variantState.variant);

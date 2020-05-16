@@ -15,7 +15,6 @@ import {api, storage, createTransToken} from './lib/ApiInstance';
 const App = () => {
 	const [activeView, setActiveView] = useState('init');
 	const [popout, setPopout] = useState(<ScreenSpinner size='large' />);
-	const [authTransToken, setAuthTransToken] = useState(createTransToken());
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
@@ -43,6 +42,7 @@ const App = () => {
 
 			if (!api.getToken()) {
 				try {
+					const authTransToken = createTransToken();
 					const response = await api.userAuth(authTransToken).catch(api.exceptionLogError);
 					if (response) {
 						api.setToken(response.token);

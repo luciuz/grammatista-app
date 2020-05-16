@@ -10,6 +10,7 @@ class Api
 		this.VARIANT_CREATE = 'variant/create';
 		this.VARIANT_GET = 'variant/get';
 		this.VARIANT_FINISH = 'variant/finish';
+		this.VARIANT_LIST = 'variant/list';
 		this.BOOKMARK_SET = 'bookmark/set';
 		this.BOOKMARK_DELETE = 'bookmark/delete';
 		this.BOOKMARK_LIST = 'bookmark/list';
@@ -27,6 +28,29 @@ class Api
 
 	setToken(token) {
 		this.client.setToken(token);
+	}
+
+	/**
+	 * @typedef {object} VariantListDto
+	 * @property {array.<VariantListItem>} list
+	 * @property {number|null} rowsLeft
+	 * @property {number|null} maxId
+	 */
+
+	/**
+	 * @typedef {object} VariantListItem
+	 * @property {number} id
+	 * @property {string} title
+	 * @property {boolean} isComplete
+	 */
+
+	/**
+	 * @param {number|null} maxId
+	 * @returns {Promise<VariantListDto>}
+	 */
+	async variantList(maxId) {
+		const client = this.client;
+		return await client.postAuth(this.VARIANT_LIST, {maxId: maxId});
 	}
 
 	/**
