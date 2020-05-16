@@ -8,7 +8,6 @@ import Cell from "@vkontakte/vkui/dist/components/Cell/Cell";
 import Icon28SearchOutline from '@vkontakte/icons/dist/28/search_outline';
 import Icon28FavoriteOutline from '@vkontakte/icons/dist/28/favorite_outline';
 import Icon28ListCheckOutline from '@vkontakte/icons/dist/28/list_check_outline';
-import Icon28HelpOutline from '@vkontakte/icons/dist/28/help_outline';
 import PropTypes from "prop-types";
 import SearchPanel from "../panel/SearchPanel";
 import LessonPanel from "../panel/LessonPanel";
@@ -41,7 +40,6 @@ const HomeView = ({ id, setActiveView }) => {
                         <Cell expandable before={<Icon28SearchOutline />} onClick={() => setActivePanel('search')}>Поиск</Cell>
                         <Cell expandable before={<Icon28FavoriteOutline />} onClick={() => setActivePanel('bookmark')}>Закладки</Cell>
                         <Cell expandable before={<Icon28ListCheckOutline />} onClick={() => setActivePanel('result-list')}>Результаты</Cell>
-                        <Cell expandable before={<Icon28HelpOutline />} onClick={() => setActivePanel('help')}>Справка</Cell>
                     </List>
                 </Group>
             </Panel>
