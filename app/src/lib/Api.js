@@ -101,7 +101,7 @@ class Api
 	 */
 	async setBookmark(lessonId, transactionToken) {
 		const client = this.client;
-		const response = client.postAuth(
+		const response = await client.postAuth(
 			this.BOOKMARK_SET,
 			{
 				lessonId: lessonId,
