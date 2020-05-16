@@ -28,7 +28,7 @@ const HomeView = ({ id, setActiveView }) => {
     const [bookmarkState, setBookmarkState] = useState(null);
     const [lessonBack, setLessonBack] = useState('search');
     const [resultListState, setResultListState] = useState(null);
-    const [resultBack, setResultBack] = useState('variant');
+    const [resultBack, setResultBack] = useState('lesson');
 
     return (
         <View id={id} activePanel={activePanel}>

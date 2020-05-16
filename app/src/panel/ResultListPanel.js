@@ -21,7 +21,7 @@ const ResultListPanel = ({ id, setActivePanel, setVariantId, resultListState, se
     const [resultListResult, setResultListResult] = useState(null);
 
     const back = () => {
-        setResultBack('variant');
+        setResultBack('lesson');
         setResultListState(null);
         setActivePanel('menu');
     }

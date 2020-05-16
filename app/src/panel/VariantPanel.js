@@ -10,9 +10,6 @@ import FormLayout from '@vkontakte/vkui/dist/components/FormLayout/FormLayout';
 import FormLayoutGroup from '@vkontakte/vkui/dist/components/FormLayoutGroup/FormLayoutGroup';
 import {api, createTransToken} from "../lib/ApiInstance";
 import PropTypes from "prop-types";
-import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
-import Icon56CheckCircleOutline from '@vkontakte/icons/dist/56/check_circle_outline';
-import Icon56DoNotDisturbOutline from '@vkontakte/icons/dist/56/do_not_disturb_outline';
 
 const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantState, lessonState, setLessonState }) => {
     const [variant, setVariant] = useState(null);
@@ -52,6 +49,7 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
                     activeVariantId: null
                 }
             });
+            setActivePanel('result');
         }
     }
 
@@ -144,26 +142,6 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
                         </FormLayout>
                     </div>}
             </Div>}
-            {isComplete !== null &&
-                <Div>
-                    {isComplete ?
-                        <Placeholder
-                            icon={<Icon56CheckCircleOutline style={{ color: 'var(--dynamic_green)' }}/>}
-                            header="Тест пройден!"
-                        >
-                            Вы великолепны
-                        </Placeholder>
-                        :
-                        <Placeholder
-                            icon={<Icon56DoNotDisturbOutline style={{ color: 'var(--dynamic_red)' }}/>}
-                            header="Не пройдено!"
-                            action={<Button size="l">Подробнее</Button>}
-                        >
-                            Выше нос
-                        </Placeholder>
-                    }
-                </Div>
-            }
         </Panel>
     );
 }
