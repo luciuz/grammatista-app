@@ -29,6 +29,11 @@ const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState
         setActivePanel(lessonBack);
     };
 
+    const showResult = () => {
+        setVariantId(lesson.completeVariantId);
+        setActivePanel('result');
+    }
+
     const doBookmark = async () => {
         if (isBookmark) {
             const response = await api.deleteBookmark(lessonId, delBMTransToken).catch(api.logError);
@@ -126,7 +131,7 @@ const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState
                                 {lesson.activeVariantId ? 'Продолжить тест' : 'Начать тест'}
                             </Button>
                         :
-                            <Button size="xl" mode="commerce">
+                            <Button size="xl" mode="commerce" onClick={showResult}>
                                 Тест пройден
                             </Button>
                         }

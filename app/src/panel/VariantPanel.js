@@ -46,7 +46,8 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
                 lesson: {
                     ...lessonState.lesson,
                     isComplete: response.isComplete,
-                    activeVariantId: null
+                    activeVariantId: null,
+                    completeVariantId: response.isComplete ? variantId : false
                 }
             });
             setActivePanel('result');

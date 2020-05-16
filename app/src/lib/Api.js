@@ -176,6 +176,7 @@ class Api
 	 * @property {boolean} isBookmark
 	 * @property {boolean} isComplete
 	 * @property {number|null} activeVariantId
+	 * @property {number|null} completeVariantId
 	 */
 
 	/**

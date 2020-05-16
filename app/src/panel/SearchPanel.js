@@ -12,11 +12,13 @@ import {api} from "../lib/ApiInstance";
 import Group from "@vkontakte/vkui/dist/components/Group/Group";
 import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
 import Icon56InfoOutline from '@vkontakte/icons/dist/56/info_outline';
+import Spinner from "@vkontakte/vkui/dist/components/Spinner/Spinner";
 
 const SearchPanel = ({ id, setActivePanel, setLessonId, searchState, setSearchState, setLessonBack }) => {
     const [q, setQ] = useState('');
     const [lastQ, setLastQ] = useState('');
     const [searchResult, setSearchResult] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const back = () => {
         setSearchState(null);
@@ -38,8 +40,10 @@ const SearchPanel = ({ id, setActivePanel, setLessonId, searchState, setSearchSt
     const doSearch = async () => {
         if (q && q !== lastQ) {
             setLastQ(q);
+            setLoading(true);
             const response = await api.lessonSearch(q, null).catch(api.logError);
             if (response) {
+                setLoading(false);
                 setSearchResult(response);
             }
         }
@@ -75,30 +79,37 @@ const SearchPanel = ({ id, setActivePanel, setLessonId, searchState, setSearchSt
                 Поиск
             </PanelHeader>
             <Search value={q} onChange={(e) => setQ(e.target.value)} onBlur={doSearch} onKeyDown={doKeyDown} />
-            {searchResult === null ?
-                <Div>
-                    <Header mode="secondary">Информация</Header>
-                    <Text weight="regular" style={{ marginBottom: 16 }}>
-                        Введите название материала, например, <b>дроби</b>
-                    </Text>
-                </Div>
+            {loading ? <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                    <Spinner size="small" style={{ marginTop: 20 }} />
+                </div>
                 :
-                <Div>
-                    {searchResult && searchResult.list.length ?
-                        <Group>
-                            <Header mode="secondary">Результаты поиска</Header>
-                            {searchResult.list.map((item) =>
-                                <SimpleCell expandable key={item.id} onClick={doLesson.bind(this, item.id)}>
-                                    {item.title}
-                                </SimpleCell>
-                            )}
-                        </Group>
+                <div>
+                    {searchResult === null ?
+                        <Div>
+                            <Header mode="secondary">Информация</Header>
+                            <Text weight="regular" style={{ marginBottom: 16 }}>
+                                Введите название материала, например, <b>дроби</b>
+                            </Text>
+                        </Div>
                         :
-                        <Placeholder icon={<Icon56InfoOutline />}>
-                            Ничего не найдено
-                        </Placeholder>
+                        <Div>
+                            {searchResult && searchResult.list.length ?
+                                <Group>
+                                    <Header mode="secondary">Результаты поиска</Header>
+                                    {searchResult.list.map((item) =>
+                                        <SimpleCell expandable key={item.id} onClick={doLesson.bind(this, item.id)}>
+                                            {item.title}
+                                        </SimpleCell>
+                                    )}
+                                </Group>
+                                :
+                                <Placeholder icon={<Icon56InfoOutline />}>
+                                    Ничего не найдено
+                                </Placeholder>
+                            }
+                        </Div>
                     }
-                </Div>
+                </div>
             }
         </Panel>
     );
