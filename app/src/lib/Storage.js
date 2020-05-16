@@ -2,7 +2,6 @@ class Storage
 {
 	constructor() {
 		this.TOKEN = 'token';
-		this.AUTH_TRANSACTION_TOKEN = 'auth_transaction_token';
 	}
 
 	/**

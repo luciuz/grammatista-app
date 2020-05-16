@@ -3,7 +3,8 @@ import FetchError from "./FetchError";
 class Api
 {
 	constructor(client) {
-		this.AUTH = 'user/auth';
+		this.USER_AUTH = 'user/auth';
+		this.USER_CHECK = 'user/check';
 		this.LESSON_SEARCH = 'lesson/search';
 		this.LESSON_GET = 'lesson/get';
 		this.VARIANT_CREATE = 'variant/create';
@@ -184,6 +185,15 @@ class Api
 	}
 
 	/**
+	 * @returns {Promise<boolean>}
+	 */
+	async userCheck() {
+		const client = this.client;
+		const response = await client.postAuth(this.USER_CHECK);
+		return Boolean(response);
+	}
+
+	/**
 	 * @typedef {object} AuthDto
 	 * @property {string} token
 	 * @property {string|null} view
@@ -193,11 +203,11 @@ class Api
 	 * @param {string} transactionToken
 	 * @returns {Promise<AuthDto>}
 	 */
-	async auth(transactionToken) {
+	async userAuth(transactionToken) {
 		const client = this.client;
 		const data = this.getQueryData();
 		data.transactionToken = transactionToken;
-		return await client.post(this.AUTH, data);
+		return await client.post(this.USER_AUTH, data);
 	}
 
 	/**
@@ -208,9 +218,24 @@ class Api
 		return JSON.parse('{"'+ decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
 	}
 
+	/**
+	 * @param {Error} e
+	 */
 	logError(e) {
 		if (e instanceof FetchError) {
 			console.log('FetchError', e.data, e.code);
+		} else {
+			console.log('Error', e.message, e.code);
+		}
+	}
+
+	/**
+	 * @param {Error} e
+	 */
+	exceptionLogError(e) {
+		if (e instanceof FetchError) {
+			console.log('FetchError', e.data, e.code);
+			throw e;
 		} else {
 			console.log('Error', e.message, e.code);
 		}

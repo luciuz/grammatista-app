@@ -8,24 +8,15 @@ import './css/index.css';
 import InitView from './view/InitView';
 import WelcomeView from './view/WelcomeView';
 import HomeView from './view/HomeView';
+import ErrorView from "./view/ErrorView";
 
 import {api, storage, createTransToken} from './lib/ApiInstance';
 
 const App = () => {
 	const [activeView, setActiveView] = useState('init');
 	const [popout, setPopout] = useState(<ScreenSpinner size='large' />);
-
-	const getAuthTransToken = () => {
-		const key = storage.AUTH_TRANSACTION_TOKEN;
-		const token = storage.get(key);
-		if (token) {
-			return token;
-		}
-
-		const newToken = createTransToken();
-		storage.set(key, newToken);
-		return newToken;
-	}
+	const [authTransToken, setAuthTransToken] = useState(createTransToken());
+	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		bridge.subscribe(({ detail: { type, data }}) => {
@@ -40,16 +31,31 @@ const App = () => {
 			const savedToken = storage.get(storage.TOKEN);
 			if (savedToken) {
 				api.setToken(savedToken);
+				try {
+					await api.userCheck().catch(api.exceptionLogError);
+				} catch (e) {
+					setPopout(null);
+					setError(e);
+					setActiveView('error');
+					return;
+				}
 			}
+
 			if (!api.getToken()) {
-				const authTransToken = getAuthTransToken();
-				const response = await api.auth(authTransToken).catch(api.logError);
-				if (response) {
-					api.setToken(response.token);
-					storage.set(storage.TOKEN, response.token);
-					if (response.view) {
-						view = response.view;
+				try {
+					const response = await api.userAuth(authTransToken).catch(api.exceptionLogError);
+					if (response) {
+						api.setToken(response.token);
+						storage.set(storage.TOKEN, response.token);
+						if (response.view) {
+							view = response.view;
+						}
 					}
+				} catch (e) {
+					setPopout(null);
+					setError(e);
+					setActiveView('error');
+					return;
 				}
 			}
 			setPopout(null);
@@ -63,6 +69,7 @@ const App = () => {
 			<InitView id='init' popout={popout} />
 			<WelcomeView id='welcome' setActiveView={setActiveView} />
 			<HomeView id='home' setActiveView={setActiveView} />
+			<ErrorView id='error' error={error} />
 		</Root>
 	);
 }
