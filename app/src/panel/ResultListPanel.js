@@ -3,13 +3,19 @@ import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
 import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
 import PanelHeaderBack from '@vkontakte/vkui/dist/components/PanelHeaderBack/PanelHeaderBack';
 import PropTypes from "prop-types";
-import SimpleCell from "@vkontakte/vkui/dist/components/SimpleCell/SimpleCell";
+import RichCell from "@vkontakte/vkui/dist/components/RichCell/RichCell";
 import Div from "@vkontakte/vkui/dist/components/Div/Div";
 import {api} from "../lib/ApiInstance";
 import Group from "@vkontakte/vkui/dist/components/Group/Group";
 import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
 import Spinner from "@vkontakte/vkui/dist/components/Spinner/Spinner";
 import Icon56InfoOutline from '@vkontakte/icons/dist/56/info_outline';
+import Icon28DoneOutline from '@vkontakte/icons/dist/28/done_outline';
+import Icon28CancelOutline from '@vkontakte/icons/dist/28/cancel_outline';
+import Icon28ChevronRightOutline from '@vkontakte/icons/dist/28/chevron_right_outline';
+import { platform, IOS } from '@vkontakte/vkui';
+
+const osName = platform();
 
 const ResultListPanel = ({ id, setActivePanel, setVariantId, resultListState, setResultListState, setResultBack}) => {
     const [resultListResult, setResultListResult] = useState(null);
@@ -21,7 +27,7 @@ const ResultListPanel = ({ id, setActivePanel, setVariantId, resultListState, se
     }
 
     const doResult = (id) => {
-        setResultBack('result');
+        setResultBack('result-list');
         setResultListState({
             resultListResult: resultListResult,
             scrollY: window.pageYOffset
@@ -61,9 +67,20 @@ const ResultListPanel = ({ id, setActivePanel, setVariantId, resultListState, se
                 (resultListResult && resultListResult.list.length ? <Div>
                         <Group>
                             {resultListResult.list.map((item) =>
-                                <SimpleCell expandable key={item.id} onClick={doResult.bind(this, item.id)}>
+                                <RichCell
+                                    key={item.id}
+                                    onClick={doResult.bind(this, item.id)}
+                                    multiline
+                                    before={item.isComplete ?
+                                        <Icon28DoneOutline style={{color: 'var(--dynamic_green)', marginRight: 10 }} />
+                                        :
+                                        <Icon28CancelOutline style={{color: 'var(--dynamic_red)', marginRight: 10 }} />
+                                    }
+                                    after={osName === IOS && <Icon28ChevronRightOutline />}
+                                    caption={'#' + item.id}
+                                >
                                     {item.title}
-                                </SimpleCell>
+                                </RichCell>
                             )}
                         </Group>
                     </Div>

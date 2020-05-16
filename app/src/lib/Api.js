@@ -137,6 +137,7 @@ class Api
 	/**
 	 * @typedef {object} VariantDto
 	 * @property {number} id
+	 * @property {string} title
 	 * @property {boolean} isComplete
 	 * @property {number|null} expiredAt
 	 * @property {number|null} finishedAt

@@ -118,7 +118,7 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
                 {isComplete === null && variant && <Div>
                     {variant.question.list[qn] && <div>
                         <Title level="1" weight="semibold" style={{ marginBottom: 16 }}>
-                            {variant.question.list[qn].title}
+                            {qn+1}. {variant.question.list[qn].title}
                         </Title>
                         <FormLayout>
                             <FormLayoutGroup>
