@@ -14,7 +14,7 @@ import Icon28Favorite from '@vkontakte/icons/dist/28/favorite';
 import {api, createTransToken} from "../lib/ApiInstance";
 import PropTypes from "prop-types";
 
-const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState, setVariantId, lessonBack, setBookmarkState }) => {
+const LessonPanel = ({ id, setActivePanel, showError, lessonId, lessonState, setLessonState, setVariantId, lessonBack, setBookmarkState }) => {
     const [lesson, setLesson] = useState(null);
     const [isBookmark, setIsBookmark] = useState(null);
     const [createVarTransToken, setCreateVarTransToken] = useState(createTransToken());
@@ -36,13 +36,13 @@ const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState
 
     const doBookmark = async () => {
         if (isBookmark) {
-            const response = await api.deleteBookmark(lessonId, delBMTransToken).catch(api.logError);
+            const response = await api.deleteBookmark(lessonId, delBMTransToken).catch(showError);
             if (response) {
                 setIsBookmark(false);
                 setDelBMTransToken(createTransToken());
             }
         } else {
-            const response = await api.setBookmark(lessonId, setBMTransToken).catch(api.logError);
+            const response = await api.setBookmark(lessonId, setBMTransToken).catch(showError);
             if (response) {
                 setIsBookmark(true);
                 setSetBMTransToken(createTransToken());
@@ -53,7 +53,7 @@ const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState
     const startVariant = async () => {
         let activeVariantId = lesson.activeVariantId;
         if (activeVariantId === null) {
-            const response = await api.createVariant(lessonId, createVarTransToken).catch(api.logError);
+            const response = await api.createVariant(lessonId, createVarTransToken).catch(showError);
             if (response) {
                 activeVariantId = response.id;
                 lesson.activeVariantId = activeVariantId;
@@ -72,7 +72,7 @@ const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState
 
     useEffect(() => {
         async function fetchData() {
-            const lesson = await api.getLesson(lessonId).catch(api.logError);
+            const lesson = await api.getLesson(lessonId).catch(showError);
             if (lesson) {
                 setIsBookmark(lesson.isBookmark);
                 setLesson(lesson);
@@ -89,7 +89,7 @@ const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState
                 fetchData();
             }
         }
-    }, [lessonId, lessonState, setLessonState, setVariantId, lesson]);
+    }, [showError, lessonId, lessonState, setLessonState, setVariantId, lesson]);
 
     return (
         <Panel id={id}>
@@ -145,6 +145,7 @@ const LessonPanel = ({ id, setActivePanel, lessonId, lessonState, setLessonState
 LessonPanel.propTypes = {
     id: PropTypes.string.isRequired,
     setActivePanel: PropTypes.func.isRequired,
+    showError: PropTypes.func.isRequired,
     lessonId: PropTypes.number,
     lessonState: PropTypes.object,
     setLessonState: PropTypes.func.isRequired,

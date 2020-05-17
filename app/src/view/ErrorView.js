@@ -5,27 +5,34 @@ import PropTypes from "prop-types";
 import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
 import Icon56DoNotDisturbOutline from '@vkontakte/icons/dist/56/do_not_disturb_outline';
 import PanelHeader from "@vkontakte/vkui/dist/components/PanelHeader/PanelHeader";
-import FetchError from "../lib/FetchError";
 
-const ErrorView = ({ id, error }) => (
+const ErrorView = ({ id, errorCode, errorText }) => (
     <View id={id} activePanel="0">
         <Panel id="0">
             <PanelHeader>
                 Грамматиста
             </PanelHeader>
-            <Placeholder
-                icon={<Icon56DoNotDisturbOutline />}
-                header={'Ошибка ' + error.code}
-            >
-                Попробуйте очистить кеш и перезапустить приложение
-            </Placeholder>
+            {errorCode && errorText &&
+            <div>
+                <Placeholder
+                    icon={<Icon56DoNotDisturbOutline />}
+                    header={'Ошибка ' + errorCode}
+                >
+                    {errorText}
+                </Placeholder>
+                <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                    Попробуйте очистить кеш и перезапустить приложение
+                </div>
+            </div>
+            }
         </Panel>
     </View>
 );
 
 ErrorView.propTypes = {
     id: PropTypes.string.isRequired,
-    error: PropTypes.instanceOf(FetchError),
+    errorCode: PropTypes.number,
+    errorText: PropTypes.string,
 };
 
 export default ErrorView;

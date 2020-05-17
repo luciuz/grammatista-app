@@ -16,7 +16,7 @@ import BookmarkPanel from "../panel/BookmarkPanel";
 import ResultPanel from "../panel/ResultPanel";
 import ResultListPanel from "../panel/ResultListPanel";
 
-const HomeView = ({ id, setActiveView }) => {
+const HomeView = ({ id, setActiveView, showError }) => {
 
     const [activePanel, setActivePanel] = useState('menu');
     const [searchState, setSearchState] = useState(null);
@@ -46,6 +46,7 @@ const HomeView = ({ id, setActiveView }) => {
             <SearchPanel
                 id="search"
                 setActivePanel={setActivePanel}
+                showError={showError}
                 setLessonId={setLessonId}
                 searchState={searchState}
                 setSearchState={setSearchState}
@@ -54,6 +55,7 @@ const HomeView = ({ id, setActiveView }) => {
             <LessonPanel
                 id="lesson"
                 setActivePanel={setActivePanel}
+                showError={showError}
                 lessonId={lessonId}
                 lessonState={lessonState}
                 setLessonState={setLessonState}
@@ -64,6 +66,7 @@ const HomeView = ({ id, setActiveView }) => {
             <VariantPanel
                 id="variant"
                 setActivePanel={setActivePanel}
+                showError={showError}
                 variantId={variantId}
                 variantState={variantState}
                 setVariantState={setVariantState}
@@ -73,6 +76,7 @@ const HomeView = ({ id, setActiveView }) => {
             <BookmarkPanel
                 id="bookmark"
                 setActivePanel={setActivePanel}
+                showError={showError}
                 setLessonId={setLessonId}
                 bookmarkState={bookmarkState}
                 setBookmarkState={setBookmarkState}
@@ -81,6 +85,7 @@ const HomeView = ({ id, setActiveView }) => {
             <ResultListPanel
                 id="result-list"
                 setActivePanel={setActivePanel}
+                showError={showError}
                 setVariantId={setVariantId}
                 resultListState={resultListState}
                 setResultListState={setResultListState}
@@ -88,6 +93,7 @@ const HomeView = ({ id, setActiveView }) => {
             />
             <ResultPanel
                 id="result"
+                showError={showError}
                 setActivePanel={setActivePanel}
                 variantId={variantId}
                 resultBack={resultBack}
@@ -98,7 +104,8 @@ const HomeView = ({ id, setActiveView }) => {
 
 HomeView.propTypes = {
     id: PropTypes.string.isRequired,
-    setActiveView: PropTypes.func.isRequired
+    setActiveView: PropTypes.func.isRequired,
+    showError: PropTypes.func.isRequired,
 };
 
 export default HomeView;

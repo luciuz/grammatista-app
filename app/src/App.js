@@ -15,7 +15,18 @@ import {api, storage, createTransToken} from './lib/ApiInstance';
 const App = () => {
 	const [activeView, setActiveView] = useState('init');
 	const [popout, setPopout] = useState(<ScreenSpinner size='large' />);
-	const [error, setError] = useState(null);
+	const [errorCode, setErrorCode] = useState(null);
+	const [errorText, setErrorText] = useState(null);
+
+	const showError = (e) => {
+		const userError = api.isUserError(e);
+		if (userError) {
+			const [newErrorCode, newErrorText] = userError;
+			setErrorCode(newErrorCode);
+			setErrorText(newErrorText);
+			setActiveView('error');
+		}
+	}
 
 	useEffect(() => {
 		bridge.subscribe(({ detail: { type, data }}) => {
@@ -27,37 +38,29 @@ const App = () => {
 		});
 		async function fetchData() {
 			let view = 'home';
+
 			const savedToken = storage.get(storage.TOKEN);
 			if (savedToken) {
 				api.setToken(savedToken);
-				try {
-					await api.userCheck().catch(api.exceptionLogError);
-				} catch (e) {
-					setPopout(null);
-					setError(e);
-					setActiveView('error');
+				const response = await api.userCheck().catch(showError);
+				if (!response) {
 					return;
 				}
 			}
 
 			if (!api.getToken()) {
-				try {
-					const authTransToken = createTransToken();
-					const response = await api.userAuth(authTransToken).catch(api.exceptionLogError);
-					if (response) {
-						api.setToken(response.token);
-						storage.set(storage.TOKEN, response.token);
-						if (response.view) {
-							view = response.view;
-						}
-					}
-				} catch (e) {
-					setPopout(null);
-					setError(e);
-					setActiveView('error');
+				const authTransToken = createTransToken();
+				const response = await api.userAuth(authTransToken).catch(showError);
+				if (!response) {
 					return;
 				}
+				api.setToken(response.token);
+				storage.set(storage.TOKEN, response.token);
+				if (response.view) {
+					view = response.view;
+				}
 			}
+
 			setPopout(null);
 			setActiveView(view);
 		}
@@ -68,8 +71,8 @@ const App = () => {
 		<Root activeView={activeView}>
 			<InitView id='init' popout={popout} />
 			<WelcomeView id='welcome' setActiveView={setActiveView} />
-			<HomeView id='home' setActiveView={setActiveView} />
-			<ErrorView id='error' error={error} />
+			<HomeView id='home' setActiveView={setActiveView} showError={showError} />
+			<ErrorView id='error' errorCode={errorCode} errorText={errorText} />
 		</Root>
 	);
 }

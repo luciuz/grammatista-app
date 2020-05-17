@@ -14,7 +14,7 @@ import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder
 import Icon56InfoOutline from '@vkontakte/icons/dist/56/info_outline';
 import Spinner from "@vkontakte/vkui/dist/components/Spinner/Spinner";
 
-const SearchPanel = ({ id, setActivePanel, setLessonId, searchState, setSearchState, setLessonBack }) => {
+const SearchPanel = ({ id, setActivePanel, showError, setLessonId, searchState, setSearchState, setLessonBack }) => {
     const [q, setQ] = useState('');
     const [lastQ, setLastQ] = useState('');
     const [searchResult, setSearchResult] = useState(null);
@@ -41,7 +41,7 @@ const SearchPanel = ({ id, setActivePanel, setLessonId, searchState, setSearchSt
         if (q && q !== lastQ) {
             setLastQ(q);
             setLoading(true);
-            const response = await api.lessonSearch(q, null).catch(api.logError);
+            const response = await api.lessonSearch(q, null).catch(showError);
             if (response) {
                 setLoading(false);
                 setSearchResult(response);
@@ -120,6 +120,7 @@ const SearchPanel = ({ id, setActivePanel, setLessonId, searchState, setSearchSt
 SearchPanel.propTypes = {
     id: PropTypes.string.isRequired,
     setActivePanel: PropTypes.func.isRequired,
+    showError: PropTypes.func.isRequired,
     setLessonId: PropTypes.func.isRequired,
     searchState: PropTypes.object,
     setSearchState: PropTypes.func.isRequired,

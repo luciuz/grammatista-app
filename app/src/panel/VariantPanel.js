@@ -11,7 +11,7 @@ import FormLayoutGroup from '@vkontakte/vkui/dist/components/FormLayoutGroup/For
 import {api, createTransToken} from "../lib/ApiInstance";
 import PropTypes from "prop-types";
 
-const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantState, lessonState, setLessonState }) => {
+const VariantPanel = ({ id, setActivePanel, showError, variantId, variantState, setVariantState, lessonState, setLessonState }) => {
     const [variant, setVariant] = useState(null);
     const [qn, setQn] = useState(null); // current question number
     const [userAnswer, setUserAnswer] = useState(null);
@@ -38,7 +38,7 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
         userAnswer.list.forEach((e) => {
             userAnswerFormatted.list.push(e.filter(el => el !== false));
         });
-        const response = await api.finishVariant(variantId, userAnswerFormatted, finishTransToken).catch(api.logError);
+        const response = await api.finishVariant(variantId, userAnswerFormatted, finishTransToken).catch(showError);
         if (response) {
             setIsComplete(response.isComplete);
             setLessonState({
@@ -83,7 +83,7 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
 
     useEffect(() => {
         async function fetchData() {
-            const variant = await api.getVariant(variantId).catch(api.logError);
+            const variant = await api.getVariant(variantId).catch(showError);
             if (variant) {
                 setUserAnswer({list: variant.question.list.map(e => Array(e.options.length).fill(false))});
                 setQn(0);
@@ -101,7 +101,7 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
                 fetchData();
             }
         }
-    }, [variantId, variantState, variant]);
+    }, [showError, variantId, variantState, variant]);
 
     useEffect(() => {
         if (qn !== null && userAnswer && userAnswer.list) {
@@ -150,6 +150,7 @@ const VariantPanel = ({ id, setActivePanel, variantId, variantState, setVariantS
 VariantPanel.propTypes = {
     id: PropTypes.string.isRequired,
     setActivePanel: PropTypes.func.isRequired,
+    showError: PropTypes.func.isRequired,
     variantId: PropTypes.number,
     variantState: PropTypes.object,
     setVariantState: PropTypes.func.isRequired,

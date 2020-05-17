@@ -17,7 +17,7 @@ import { format } from 'date-fns'
 
 const osName = platform();
 
-const ResultListPanel = ({ id, setActivePanel, setVariantId, resultListState, setResultListState, setResultBack}) => {
+const ResultListPanel = ({ id, setActivePanel, showError, setVariantId, resultListState, setResultListState, setResultBack}) => {
     const [resultListResult, setResultListResult] = useState(null);
 
     const back = () => {
@@ -37,7 +37,7 @@ const ResultListPanel = ({ id, setActivePanel, setVariantId, resultListState, se
     }
 
     const doResultList = async () => {
-        const response = await api.variantList(null).catch(api.logError);
+        const response = await api.variantList(null).catch(showError);
         if (response) {
             setResultListResult(response);
         }
@@ -52,7 +52,7 @@ const ResultListPanel = ({ id, setActivePanel, setVariantId, resultListState, se
                 doResultList();
             }
         }
-    }, [resultListResult, resultListState]);
+    }, [doResultList, resultListResult, resultListState]);
 
     return (
         <Panel id={id}>
@@ -96,6 +96,7 @@ const ResultListPanel = ({ id, setActivePanel, setVariantId, resultListState, se
 ResultListPanel.propTypes = {
     id: PropTypes.string.isRequired,
     setActivePanel: PropTypes.func.isRequired,
+    showError: PropTypes.func.isRequired,
     setVariantId: PropTypes.func.isRequired,
     resultListState: PropTypes.object,
     setResultListState: PropTypes.func.isRequired,

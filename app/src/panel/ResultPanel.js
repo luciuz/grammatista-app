@@ -11,7 +11,7 @@ import Icon56CheckCircleOutline from '@vkontakte/icons/dist/56/check_circle_outl
 import Icon56DoNotDisturbOutline from '@vkontakte/icons/dist/56/do_not_disturb_outline';
 import SimpleCell from "@vkontakte/vkui/dist/components/SimpleCell/SimpleCell";
 
-const ResultPanel = ({ id, setActivePanel, variantId, resultBack}) => {
+const ResultPanel = ({ id, setActivePanel, showError, variantId, resultBack}) => {
     const [variant, setVariant] = useState(null);
     const [showMore, setShowMore] = useState(false);
 
@@ -21,7 +21,7 @@ const ResultPanel = ({ id, setActivePanel, variantId, resultBack}) => {
 
     useEffect(() => {
         async function fetchData() {
-            const variant = await api.getVariant(variantId).catch(api.logError);
+            const variant = await api.getVariant(variantId).catch(showError);
             if (variant) {
                 setVariant(variant);
                 if (!variant.isComplete) {
@@ -30,7 +30,7 @@ const ResultPanel = ({ id, setActivePanel, variantId, resultBack}) => {
             }
         }
         fetchData();
-    }, [variantId]);
+    }, [showError, variantId]);
 
     return (
         <Panel id={id}>
@@ -73,6 +73,7 @@ const ResultPanel = ({ id, setActivePanel, variantId, resultBack}) => {
 
 ResultPanel.propTypes = {
     id: PropTypes.string.isRequired,
+    showError: PropTypes.func.isRequired,
     setActivePanel: PropTypes.func.isRequired,
     variantId: PropTypes.number,
     resultBack: PropTypes.string.isRequired,

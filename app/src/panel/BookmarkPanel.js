@@ -10,7 +10,7 @@ import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder
 import Spinner from "@vkontakte/vkui/dist/components/Spinner/Spinner";
 import Icon56InfoOutline from '@vkontakte/icons/dist/56/info_outline';
 
-const BookmarkPanel = ({ id, setActivePanel, setLessonId, bookmarkState, setBookmarkState, setLessonBack }) => {
+const BookmarkPanel = ({ id, setActivePanel, showError, setLessonId, bookmarkState, setBookmarkState, setLessonBack }) => {
     const [bookmarkResult, setBookmarkResult] = useState(null);
 
     const back = () => {
@@ -30,7 +30,7 @@ const BookmarkPanel = ({ id, setActivePanel, setLessonId, bookmarkState, setBook
     }
 
     const doBookmarkList = async () => {
-        const response = await api.bookmarkList(null).catch(api.logError);
+        const response = await api.bookmarkList(null).catch(showError);
         if (response) {
             setBookmarkResult(response);
         }
@@ -45,7 +45,7 @@ const BookmarkPanel = ({ id, setActivePanel, setLessonId, bookmarkState, setBook
                 doBookmarkList();
             }
         }
-    }, [bookmarkResult, bookmarkState]);
+    }, [doBookmarkList, bookmarkResult, bookmarkState]);
 
     return (
         <Panel id={id}>
@@ -78,6 +78,7 @@ const BookmarkPanel = ({ id, setActivePanel, setLessonId, bookmarkState, setBook
 BookmarkPanel.propTypes = {
     id: PropTypes.string.isRequired,
     setActivePanel: PropTypes.func.isRequired,
+    showError: PropTypes.func.isRequired,
     setLessonId: PropTypes.func.isRequired,
     bookmarkState: PropTypes.object,
     setBookmarkState: PropTypes.func.isRequired,

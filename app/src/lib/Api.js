@@ -245,26 +245,40 @@ class Api
 	}
 
 	/**
+	 * @deprecated
 	 * @param {Error} e
 	 */
 	logError(e) {
 		if (e instanceof FetchError) {
-			console.log('FetchError', e.data, e.code);
+			console.log('FetchError', e.data, e.text, e.code);
 		} else {
-			console.log('Error', e.message, e.code);
+			console.log('Error', e.message, e.name);
 		}
 	}
 
 	/**
 	 * @param {Error} e
+	 * @return {array|false}
 	 */
-	exceptionLogError(e) {
+	isUserError(e) {
+		const client = this.client;
 		if (e instanceof FetchError) {
-			console.log('FetchError', e.data, e.code);
-			throw e;
-		} else {
-			console.log('Error', e.message, e.code);
+			switch (e.code) {
+				case client.STATUS_BAD_REQUEST:
+					const errors = e.data.errors;
+					const text = (errors && errors[Object.keys(errors)[0]][0]) || '';
+					return [e.code, text];
+				case client.STATUS_UNAUTHORIZED:
+				case client.STATUS_UNPROCESSABLE_ENTITY:
+				case client.STATUS_TOO_MANY_REQUESTS:
+				case client.STATUS_INTERNAL_ERROR:
+				case client.STATUS_SERVICE_UNAVAILABLE:
+					return [e.code, e.text];
+				default:
+					return false;
+			}
 		}
+		return false;
 	}
 }
 

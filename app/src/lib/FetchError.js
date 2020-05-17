@@ -4,14 +4,19 @@ class FetchError extends Error
 		super();
 
 		/**
-		 * @type {string|null}
+		 * @type {string}
 		 */
-		this.code = null;
+		this.code = undefined;
 
 		/**
-		 * @type {object|string|null}
+		 * @type {string}
 		 */
-		this.data = null;
+		this.text = undefined;
+
+		/**
+		 * @type {object}
+		 */
+		this.data = undefined;
 	}
 
 	/**
@@ -20,7 +25,12 @@ class FetchError extends Error
 	 */
 	addParams(code, data) {
 		this.code = code;
-		this.data = data;
+		if (typeof data === 'string') {
+			this.text = data;
+		}
+		if (typeof data === 'object') {
+			this.data = data;
+		}
 	}
 }
 
