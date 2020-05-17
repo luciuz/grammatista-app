@@ -89,7 +89,7 @@ const SearchPanel = ({ id, setActivePanel, showError, setLessonId, searchState, 
                             <Header mode="secondary">Информация</Header>
                             <Div>
                                 <Text weight="regular" style={{ marginBottom: 16 }}>
-                                    Введите название материала, например, <b>дроби</b>
+                                    Введите название материала, например, <b>числа</b>, <b>таблица умножения</b> или <b>дроби</b>
                                 </Text>
                             </Div>
                         </div>

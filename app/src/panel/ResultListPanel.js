@@ -36,23 +36,23 @@ const ResultListPanel = ({ id, setActivePanel, showError, setVariantId, resultLi
         setActivePanel('result');
     }
 
-    const doResultList = async () => {
-        const response = await api.variantList(null).catch(showError);
-        if (response) {
-            setResultListResult(response);
-        }
-    }
-
     useEffect(() => {
+        async function fetchData() {
+            const response = await api.variantList(null).catch(showError);
+            if (response) {
+                setResultListResult(response);
+            }
+        }
+
         if (resultListResult === null) {
             if (resultListState) {
                 setResultListResult(resultListState.resultListResult);
                 window.scrollTo(0, resultListState.scrollY);
             } else {
-                doResultList();
+                fetchData();
             }
         }
-    }, [doResultList, resultListResult, resultListState]);
+    }, [showError, resultListResult, resultListState]);
 
     return (
         <Panel id={id}>

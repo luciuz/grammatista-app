@@ -29,23 +29,23 @@ const BookmarkPanel = ({ id, setActivePanel, showError, setLessonId, bookmarkSta
         setActivePanel('lesson');
     }
 
-    const doBookmarkList = async () => {
-        const response = await api.bookmarkList(null).catch(showError);
-        if (response) {
-            setBookmarkResult(response);
-        }
-    }
-
     useEffect(() => {
+        async function fetchData() {
+            const response = await api.bookmarkList(null).catch(showError);
+            if (response) {
+                setBookmarkResult(response);
+            }
+        }
+
         if (bookmarkResult === null) {
             if (bookmarkState) {
                 setBookmarkResult(bookmarkState.bookmarkResult);
                 window.scrollTo(0, bookmarkState.scrollY);
             } else {
-                doBookmarkList();
+                fetchData();
             }
         }
-    }, [doBookmarkList, bookmarkResult, bookmarkState]);
+    }, [showError, bookmarkResult, bookmarkState]);
 
     return (
         <Panel id={id}>
