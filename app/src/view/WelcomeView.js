@@ -4,7 +4,9 @@ import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
 import Gallery from '@vkontakte/vkui/dist/components/Gallery/Gallery';
 import Button from "@vkontakte/vkui/dist/components/Button/Button";
 import Placeholder from "@vkontakte/vkui/dist/components/Placeholder/Placeholder";
-import Icon56UsersOutline from '@vkontakte/icons/dist/56/users_outline';
+import Icon56ServicesOutline from '@vkontakte/icons/dist/56/services_outline';
+import Icon56DocumentOutline from '@vkontakte/icons/dist/56/document_outline';
+import Icon56CheckCircleDeviceOutline from '@vkontakte/icons/dist/56/check_circle_device_outline';
 import PropTypes from "prop-types";
 
 const WelcomeView = ({ id, setActiveView }) => {
@@ -27,7 +29,7 @@ const WelcomeView = ({ id, setActiveView }) => {
                 >
                     <div style={{ backgroundColor: 'var(--destructive)' }}>
                         <Placeholder
-                            icon={<Icon56UsersOutline />}
+                            icon={<Icon56ServicesOutline />}
                             header="Добро пожаловать в Грамматиста!"
                             action={<Button size="l" onClick={nextSlide}>Далее</Button>}
                         >
@@ -36,7 +38,7 @@ const WelcomeView = ({ id, setActiveView }) => {
                     </div>
                     <div style={{ backgroundColor: 'var(--button_commerce_background)' }}>
                         <Placeholder
-                            icon={<Icon56UsersOutline />}
+                            icon={<Icon56DocumentOutline />}
                             header="1. Изучайте материалы"
                             action={<Button size="l" onClick={nextSlide}>Далее</Button>}
                         >
@@ -45,7 +47,7 @@ const WelcomeView = ({ id, setActiveView }) => {
                     </div>
                     <div style={{ backgroundColor: 'var(--accent)' }}>
                         <Placeholder
-                            icon={<Icon56UsersOutline />}
+                            icon={<Icon56CheckCircleDeviceOutline />}
                             header="2. Проходите тесты"
                             action={<Button size="l" onClick={() => setActiveView('home')} >
                                 Понятно
