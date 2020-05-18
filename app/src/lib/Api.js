@@ -260,7 +260,7 @@ class Api
 
 	/**
 	 * @param {Error} e
-	 * @return {array|false}
+	 * @return {array|boolean}
 	 */
 	isUserError(e) {
 		const client = this.client;
@@ -281,7 +281,7 @@ class Api
 			}
 		}
 		if (e.name === 'TypeError' && e.message === 'Failed to fetch') {
-			return [this.CLIENT_ERROR_FAILED_TO_FETCH, e.message];
+			return [this.CLIENT_ERROR_FAILED_TO_FETCH, e.message + '.'];
 		}
 		return false;
 	}

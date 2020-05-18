@@ -20,7 +20,7 @@ const ErrorView = ({ id, errorCode, errorText }) => (
                 >
                     {errorText}
                 </Placeholder>
-                <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                <div style={{ textAlign: 'center' }}>
                     Попробуйте очистить кеш и перезапустить приложение
                 </div>
             </div>
