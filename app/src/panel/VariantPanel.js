@@ -114,11 +114,13 @@ const VariantPanel = ({ id, setActivePanel, showError, variantId, variantState, 
             <PanelHeader left={<PanelHeaderBack onClick={back} />}>
                 Тестирование
             </PanelHeader>
-                {isComplete === null && variant && <Div>
+                {isComplete === null && variant && <div>
                     {variant.question.list[qn] && <div>
-                        <Title level="1" weight="semibold" style={{ marginBottom: 16 }}>
-                            {qn+1}. {variant.question.list[qn].title}
-                        </Title>
+                        <Div>
+                            <Title level="1" weight="semibold" style={{ marginBottom: 16 }}>
+                                {qn+1}. {variant.question.list[qn].title}
+                            </Title>
+                        </Div>
                         <FormLayout>
                             <FormLayoutGroup>
                                 {variant.question.list[qn].options.map((item, i) =>
@@ -142,7 +144,7 @@ const VariantPanel = ({ id, setActivePanel, showError, variantId, variantState, 
                             </FormLayoutGroup>
                         </FormLayout>
                     </div>}
-            </Div>}
+            </div>}
         </Panel>
     );
 }

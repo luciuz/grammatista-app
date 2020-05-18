@@ -101,8 +101,8 @@ const LessonPanel = ({ id, setActivePanel, showError, lessonId, lessonState, set
             ]}>
                 Материал
             </PanelHeader>
-                {lesson && <Div>
-                    <div style={{ marginBottom: 16 }}>
+                {lesson && <div>
+                    <Div style={{ marginBottom: 16 }}>
                     {lesson.body.list.map((item, i) =>
                         [
                             item.h1 &&
@@ -123,7 +123,7 @@ const LessonPanel = ({ id, setActivePanel, showError, lessonId, lessonState, set
                             <a key={i} href={item.a.link} target="_blank" rel="noopener noreferrer">{item.a.text}</a>,
                         ]
                     )}
-                </div>
+                </Div>
                 <FormLayout>
                     <FormLayoutGroup>
                         {lesson && lesson.isComplete === false ?
@@ -137,7 +137,7 @@ const LessonPanel = ({ id, setActivePanel, showError, lessonId, lessonState, set
                         }
                     </FormLayoutGroup>
                 </FormLayout>
-            </Div>}
+            </div>}
         </Panel>
     );
 }
