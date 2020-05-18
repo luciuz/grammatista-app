@@ -15,6 +15,8 @@ class Api
 		this.BOOKMARK_DELETE = 'bookmark/delete';
 		this.BOOKMARK_LIST = 'bookmark/list';
 
+		this.CLIENT_ERROR_FAILED_TO_FETCH = 1;
+
 		/**
 		 * @type ApiClient
 		 * @protected
@@ -277,6 +279,9 @@ class Api
 				default:
 					return false;
 			}
+		}
+		if (e.name === 'TypeError' && e.message === 'Failed to fetch') {
+			return [this.CLIENT_ERROR_FAILED_TO_FETCH, e.message];
 		}
 		return false;
 	}
