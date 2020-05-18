@@ -19,6 +19,13 @@ class Storage
 	set(key, value) {
 		localStorage.setItem(key, value);
 	}
+
+	/**
+	 * @param {string} key
+	 */
+	delete(key) {
+		localStorage.removeItem(key);
+	}
 }
 
 export default Storage;

@@ -24,6 +24,13 @@ class Api
 		this.client = client;
 	}
 
+	/**
+	 * @return {ApiClient}
+	 */
+	getClient() {
+		return this.client;
+	}
+
 	getToken() {
 		return this.client.getToken();
 	}

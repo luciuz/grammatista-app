@@ -22,6 +22,9 @@ const App = () => {
 		const userError = api.isUserError(e);
 		if (userError) {
 			const [newErrorCode, newErrorText] = userError;
+			if (newErrorCode === api.getClient().STATUS_UNAUTHORIZED) {
+				storage.delete(storage.TOKEN);
+			}
 			setErrorCode(newErrorCode);
 			setErrorText(newErrorText);
 			setActiveView('error');
