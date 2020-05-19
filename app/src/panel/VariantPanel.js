@@ -27,8 +27,6 @@ const VariantPanel = ({ id, setActivePanel, showError, variantId, variantState, 
                 userAnswer: userAnswer,
                 finishTransToken: finishTransToken
             });
-        } else {
-            setVariantState(null);
         }
         setActivePanel('lesson');
     }
@@ -50,6 +48,7 @@ const VariantPanel = ({ id, setActivePanel, showError, variantId, variantState, 
                     completeVariantId: response.isComplete ? variantId : false
                 }
             });
+            setVariantState(null);
             setActivePanel('result');
         }
     }
