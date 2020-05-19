@@ -112,7 +112,7 @@ const LessonPanel = ({ id, setActivePanel, showError, lessonId, lessonState, set
                             item.h3 &&
                             <Title key={i} level="3" weight="semibold" style={{ marginBottom: 16 }}>{item.h3}</Title>,
                             item.p &&
-                            <Text key={i} weight="regular" style={{ marginBottom: 16 }}>{item.p}</Text>,
+                            <Text key={i} weight="regular" style={{ marginBottom: 16 }}>{item.p.join(' ')}</Text>,
                             item.i &&
                             <img key={i} src={item.i.src} alt={item.i.alt} style={{ marginBottom: 16 }} />,
                             item.l &&
