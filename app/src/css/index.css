@@ -16,6 +16,7 @@ table {
 
 table caption {
     background: transparent;
+    color: #222;
     font-size: 1rem;
     font-weight: bold
 }
@@ -26,6 +27,7 @@ table thead {
 
 table thead tr th,
 table thead tr td {
+    color: #222;
     font-size: 0.875rem;
     font-weight: bold;
     padding: 0.5rem 0.625rem 0.625rem
@@ -37,6 +39,7 @@ table tfoot {
 
 table tfoot tr th,
 table tfoot tr td {
+    color: #222;
     font-size: 0.875rem;
     font-weight: bold;
     padding: 0.5rem 0.625rem 0.625rem
@@ -44,6 +47,7 @@ table tfoot tr td {
 
 table tr th,
 table tr td {
+    color: #222;
     font-size: 0.875rem;
     padding: 0.5625rem 0.625rem;
     text-align: left
@@ -63,4 +67,13 @@ table tbody tr td,
 table tr td {
     display: table-cell;
     line-height: 1.125rem
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+.table-wrapper .table-inner {
+    display: inline-block;
 }
