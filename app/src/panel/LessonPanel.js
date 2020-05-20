@@ -121,6 +121,22 @@ const LessonPanel = ({ id, setActivePanel, showError, lessonId, lessonState, set
                             <ol key={i}>{item.ln.map((li, j) => <li key={j}>{li}</li>)}</ol>,
                             item.a &&
                             <a key={i} href={item.a.link} target="_blank" rel="noopener noreferrer">{item.a.text}</a>,
+                            item.t &&
+                            <table key={i}>
+                                <thead>
+                                    <tr key='0'>
+                                        {item.t[0].map((td, k2) => <td key={k2}>{td}</td>)}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {item.t.map((line, k) => [
+                                    k > 0 &&
+                                        <tr key={k}>
+                                            {line.map((td, k2) => <td key={k2}>{td}</td>)}
+                                        </tr>
+                                ])}
+                                </tbody>
+                            </table>
                         ]
                     )}
                 </Div>
