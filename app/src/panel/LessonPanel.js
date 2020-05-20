@@ -16,18 +16,19 @@ import PropTypes from "prop-types";
 
 const LessonPanel = ({ id, setActivePanel, showError, lessonId, lessonState, setLessonState, setVariantId, lessonBack, setBookmarkState }) => {
     const [lesson, setLesson] = useState(null);
-    const [isBookmark, setIsBookmark] = useState(null);
     const [createVarTransToken, setCreateVarTransToken] = useState(createTransToken());
     const [delBMTransToken, setDelBMTransToken] = useState(createTransToken());
     const [setBMTransToken, setSetBMTransToken] = useState(createTransToken());
 
     const back = () => {
-        if (!isBookmark && lessonBack === 'bookmark') {
+        if (!isBookmark() && lessonBack === 'bookmark') {
             setBookmarkState(null);
         }
         setLessonState(null);
         setActivePanel(lessonBack);
     };
+
+    const isBookmark = () => lesson && lesson.isBookmark;
 
     const showResult = () => {
         setVariantId(lesson.completeVariantId);
@@ -35,16 +36,18 @@ const LessonPanel = ({ id, setActivePanel, showError, lessonId, lessonState, set
     }
 
     const doBookmark = async () => {
-        if (isBookmark) {
+        if (isBookmark()) {
             const response = await api.deleteBookmark(lessonId, delBMTransToken).catch(showError);
             if (response) {
-                setIsBookmark(false);
+                lesson.isBookmark = false
+                setLesson(lesson);
                 setDelBMTransToken(createTransToken());
             }
         } else {
             const response = await api.setBookmark(lessonId, setBMTransToken).catch(showError);
             if (response) {
-                setIsBookmark(true);
+                lesson.isBookmark = true
+                setLesson(lesson);
                 setSetBMTransToken(createTransToken());
             }
         }
@@ -74,7 +77,6 @@ const LessonPanel = ({ id, setActivePanel, showError, lessonId, lessonState, set
         async function fetchData() {
             const lesson = await api.getLesson(lessonId).catch(showError);
             if (lesson) {
-                setIsBookmark(lesson.isBookmark);
                 setLesson(lesson);
             }
         }
@@ -82,7 +84,6 @@ const LessonPanel = ({ id, setActivePanel, showError, lessonId, lessonState, set
         if (!lesson) {
             if (lessonState) {
                 const lessonLS = lessonState.lesson;
-                setIsBookmark(lessonLS.isBookmark);
                 setLesson(lessonLS);
                 window.scrollTo(0, lessonState.scrollY);
             } else {
@@ -96,7 +97,7 @@ const LessonPanel = ({ id, setActivePanel, showError, lessonId, lessonState, set
             <PanelHeader left={[
                 <PanelHeaderBack key="back" onClick={back} />,
                 <PanelHeaderButton key="fav" onClick={doBookmark}>
-                    {isBookmark ? <Icon28Favorite/> : <Icon28FavoriteOutline />}
+                    {isBookmark() ? <Icon28Favorite/> : <Icon28FavoriteOutline />}
                 </PanelHeaderButton>
             ]}>
                 Материал
