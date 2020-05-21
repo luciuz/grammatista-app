@@ -278,6 +278,7 @@ class Api
 					const text = (errors && errors[Object.keys(errors)[0]][0]) || '';
 					return [e.code, text];
 				case client.STATUS_UNAUTHORIZED:
+				case client.STATUS_FORBIDDEN:
 				case client.STATUS_UNPROCESSABLE_ENTITY:
 				case client.STATUS_TOO_MANY_REQUESTS:
 				case client.STATUS_INTERNAL_ERROR:
