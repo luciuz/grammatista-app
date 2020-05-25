@@ -5,6 +5,7 @@ import Button from '@vkontakte/vkui/dist/components/Button/Button';
 import PanelHeaderBack from '@vkontakte/vkui/dist/components/PanelHeaderBack/PanelHeaderBack';
 import PanelHeaderButton from "@vkontakte/vkui/dist/components/PanelHeaderButton/PanelHeaderButton";
 import Div from '@vkontakte/vkui/dist/components/Div/Div';
+import Link from '@vkontakte/vkui/dist/components/Link/Link';
 import Title from '@vkontakte/vkui/dist/components/Typography/Title/Title';
 import Text from '@vkontakte/vkui/dist/components/Typography/Text/Text';
 import FormLayout from '@vkontakte/vkui/dist/components/FormLayout/FormLayout';
@@ -121,7 +122,7 @@ const LessonPanel = ({ id, setActivePanel, showError, lessonId, lessonState, set
                             item.ln &&
                             <ol key={i}>{item.ln.map((li, j) => <li key={j}>{li}</li>)}</ol>,
                             item.a &&
-                            <a key={i} href={item.a.link} target="_blank" rel="noopener noreferrer">{item.a.text}</a>,
+                            <Link key={i} href={item.a.link} target="_blank" rel="noopener noreferrer">{item.a.text}</Link>,
                             item.t &&
                             <div className='table-wrapper' key={i}>
                                 <div className='table-inner'>
